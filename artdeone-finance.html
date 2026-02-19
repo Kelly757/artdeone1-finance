@@ -1,0 +1,2947 @@
+<!DOCTYPE html>
+<html lang="my" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SM Pro · Service Manager</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════
+   CSS VARIABLES
+═══════════════════════════════════════════ */
+    :root {
+      --g: #a7e169;
+      --g-dark: #8ecb4f;
+      --g-light: #d4f0a8;
+      --g-pale: #f0fae4;
+      --r: #ed2939;
+      --r-light: #ffeaec;
+      --r-dark: #c41e2d;
+      --white: #ffffff;
+      --bg: #f5f8f0;
+      --surface: #ffffff;
+      --surface2: #f0f5e8;
+      --surface3: #e8f0da;
+      --border: #dce8c8;
+      --border2: #ccdcb0;
+      --text: #1c2614;
+      --text2: #3d5225;
+      --text3: #6a8050;
+      --text4: #95aa7a;
+      --shadow-sm: 0 1px 4px rgba(60, 90, 30, 0.08);
+      --shadow: 0 2px 12px rgba(60, 90, 30, 0.10);
+      --shadow-md: 0 6px 28px rgba(60, 90, 30, 0.13);
+      --shadow-lg: 0 16px 48px rgba(60, 90, 30, 0.16);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --radius-lg: 20px;
+      --sidebar-w: 248px;
+      --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0e1509;
+      --surface: #161e0c;
+      --surface2: #1c2810;
+      --surface3: #223012;
+      --border: #2a3a18;
+      --border2: #344820;
+      --text: #e4f0cc;
+      --text2: #b8d08a;
+      --text3: #7a9a50;
+      --text4: #50682e;
+      --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.3);
+      --shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 6px 28px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+      --g-pale: #1c2a10;
+      --r-light: #1f0c0e;
+    }
+
+    /* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 15px;
+    }
+
+    body {
+      font-family: 'DM Sans', 'Noto Sans Myanmar', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 10px;
+    }
+
+    /* ═══════════════════════════════════════════
+   LOGIN SCREEN
+═══════════════════════════════════════════ */
+    #loginScreen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.4s;
+    }
+
+    #loginScreen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .login-wrap {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+      animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .login-brand {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .login-mark {
+      width: 64px;
+      height: 64px;
+      background: var(--surface);
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 20px rgba(167, 225, 105, 0.12);
+      border: 1.5px solid var(--border);
+      padding: 10px;
+    }
+
+    .login-brand h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .login-brand p {
+      font-size: 13px;
+      color: var(--text3);
+      margin-top: 3px;
+    }
+
+    .login-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .login-card h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .f-group {
+      margin-bottom: 14px;
+    }
+
+    .f-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text2);
+      margin-bottom: 6px;
+      letter-spacing: 0.2px;
+    }
+
+    .f-input {
+      width: 100%;
+      padding: 11px 14px;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border var(--transition), box-shadow var(--transition);
+    }
+
+    .f-input:focus {
+      border-color: var(--g);
+      box-shadow: 0 0 0 3px rgba(167, 225, 105, 0.2);
+    }
+
+    .f-input::placeholder {
+      color: var(--text4);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      background: var(--g);
+      color: var(--text);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 700;
+      transition: all var(--transition);
+      letter-spacing: 0.2px;
+    }
+
+    .btn-primary:hover {
+      background: var(--g-dark);
+      box-shadow: 0 4px 16px rgba(167, 225, 105, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .login-err {
+      display: none;
+      color: var(--r);
+      font-size: 12px;
+      margin-top: 10px;
+      text-align: center;
+      background: var(--r-light);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+    }
+
+    .login-lockout {
+      display: none;
+      color: var(--r);
+      font-size: 12px;
+      margin-top: 10px;
+      text-align: center;
+      background: var(--r-light);
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+    }
+
+    .login-lockout .lockout-timer {
+      font-size: 20px;
+      font-weight: 800;
+      display: block;
+      margin-top: 4px;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--text4);
+    }
+
+    /* Password toggle */
+    .pass-wrap {
+      position: relative;
+    }
+
+    .pass-wrap .f-input {
+      padding-right: 44px;
+    }
+
+    .pass-toggle {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      padding: 4px 6px;
+      cursor: pointer;
+      color: var(--text4);
+      display: flex;
+      align-items: center;
+      border-radius: 4px;
+      transition: color var(--transition);
+    }
+
+    .pass-toggle:hover {
+      color: var(--text2);
+    }
+
+    .pass-strength {
+      font-size: 11px;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    .pass-strength.weak {
+      color: var(--r);
+    }
+
+    .pass-strength.ok {
+      color: #c07000;
+    }
+
+    .pass-strength.strong {
+      color: #2d7d30;
+    }
+
+    [data-theme="dark"] .pass-strength.strong {
+      color: var(--g);
+    }
+
+    /* ═══════════════════════════════════════════
+   APP LAYOUT
+═══════════════════════════════════════════ */
+    #app {
+      display: none;
+    }
+
+    #app.visible {
+      display: flex;
+    }
+
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--surface);
+      border-right: 1.5px solid var(--border);
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 12px;
+      z-index: 100;
+      overflow-y: auto;
+      transition: background var(--transition);
+    }
+
+    .sb-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .sb-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--g-pale);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 5px;
+    }
+
+    .sb-logo-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.2px;
+    }
+
+    .sb-logo-sub {
+      font-size: 10px;
+      color: var(--text3);
+      font-weight: 500;
+    }
+
+    .sb-section {
+      margin-bottom: 6px;
+    }
+
+    .sb-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text4);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0 10px 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      color: var(--text3);
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+      margin-bottom: 1px;
+      position: relative;
+      user-select: none;
+    }
+
+    .nav-item .nav-icon {
+      width: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: inherit;
+    }
+
+    .nav-item .nav-badge {
+      margin-left: auto;
+      background: var(--g-pale);
+      color: var(--text2);
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 7px;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .nav-item:hover {
+      background: var(--surface2);
+      color: var(--text2);
+    }
+
+    .nav-item.active {
+      background: var(--g);
+      color: var(--text);
+      font-weight: 700;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-item.active .nav-badge {
+      background: rgba(255, 255, 255, 0.4);
+      color: var(--text);
+    }
+
+    .sb-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 12px 10px;
+    }
+
+    .sb-bottom {
+      margin-top: auto;
+    }
+
+    .sb-user-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      margin-bottom: 8px;
+    }
+
+    .sb-user-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .sb-user-role {
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    .sb-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 9px 12px;
+      background: none;
+      border: none;
+      border-radius: var(--radius-sm);
+      color: var(--text3);
+      font-size: 13px;
+      font-weight: 500;
+      text-align: left;
+      transition: all var(--transition);
+      margin-bottom: 2px;
+    }
+
+    .sb-btn:hover {
+      background: var(--surface2);
+      color: var(--text2);
+    }
+
+    .sb-btn.danger {
+      color: var(--r);
+    }
+
+    .sb-btn.danger:hover {
+      background: var(--r-light);
+    }
+
+    /* ═══════════════════════════════════════════
+   MAIN CONTENT
+═══════════════════════════════════════════ */
+    .main-content {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      min-height: 100vh;
+      padding: 28px 32px;
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      gap: 16px;
+    }
+
+    .page-title-wrap {}
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    .page-sub {
+      font-size: 13px;
+      color: var(--text3);
+      margin-top: 3px;
+    }
+
+    .btn-add {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      background: var(--g);
+      color: var(--text);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: all var(--transition);
+      flex-shrink: 0;
+    }
+
+    .btn-add:hover {
+      background: var(--g-dark);
+      box-shadow: 0 4px 16px rgba(167, 225, 105, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* ═══════════════════════════════════════════
+   STAT CARDS
+═══════════════════════════════════════════ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow var(--transition), transform var(--transition);
+    }
+
+    .stat-card:hover {
+      box-shadow: var(--shadow);
+      transform: translateY(-1px);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--g);
+    }
+
+    .stat-card.red-accent::before {
+      background: var(--r);
+    }
+
+    .stat-card.gray-accent::before {
+      background: var(--border2);
+    }
+
+    .stat-icon {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      color: var(--text3);
+    }
+
+    .stat-val {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.8px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-val-sm {
+      font-size: 18px;
+    }
+
+    .stat-label {
+      font-size: 11.5px;
+      color: var(--text3);
+      font-weight: 500;
+    }
+
+    .stat-sub {
+      font-size: 11px;
+      color: var(--text4);
+      margin-top: 2px;
+    }
+
+    /* ═══════════════════════════════════════════
+   TABLE CARD
+═══════════════════════════════════════════ */
+    .table-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .table-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+
+    .table-head-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .table-head-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-box {
+      padding: 7px 12px 7px 32px;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      width: 200px;
+      transition: border var(--transition);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%236a8050' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 10px center;
+    }
+
+    .search-box:focus {
+      border-color: var(--g);
+    }
+
+    .search-box::placeholder {
+      color: var(--text4);
+    }
+
+    .tbl-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead tr {
+      background: var(--surface2);
+    }
+
+    th {
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 13px 16px;
+      font-size: 13px;
+      color: var(--text);
+      border-top: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    tr:hover td {
+      background: var(--surface2);
+    }
+
+    .cell-name {
+      font-weight: 600;
+    }
+
+    .cell-sub {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 1px;
+    }
+
+    /* ═══════════════════════════════════════════
+   BADGES
+═══════════════════════════════════════════ */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge-green {
+      background: rgba(167, 225, 105, 0.2);
+      color: #2d6010;
+    }
+
+    .badge-red {
+      background: rgba(237, 41, 57, 0.12);
+      color: var(--r);
+    }
+
+    .badge-yellow {
+      background: rgba(234, 179, 8, 0.15);
+      color: #7a5c00;
+    }
+
+    .badge-blue {
+      background: rgba(59, 130, 246, 0.1);
+      color: #1a56db;
+    }
+
+    .badge-gray {
+      background: var(--surface3);
+      color: var(--text3);
+    }
+
+    [data-theme="dark"] .badge-green {
+      color: #8eda40;
+    }
+
+    [data-theme="dark"] .badge-yellow {
+      color: #fcd34d;
+    }
+
+    [data-theme="dark"] .badge-blue {
+      color: #93c5fd;
+    }
+
+    .btn-ic {
+      background: none;
+      border: none;
+      padding: 6px 8px;
+      border-radius: 6px;
+      color: var(--text3);
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .btn-ic:hover {
+      background: var(--surface3);
+      color: var(--text);
+    }
+
+    .btn-ic.del:hover {
+      background: var(--r-light);
+      color: var(--r);
+    }
+
+    .empty-row td {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--text4);
+      font-size: 13px;
+    }
+
+    .empty-icon {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+      color: var(--text4);
+    }
+
+    /* ═══════════════════════════════════════════
+   DAYS LEFT INDICATORS
+═══════════════════════════════════════════ */
+    .dl {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .dl-ok {
+      color: #2d7d30;
+    }
+
+    .dl-warn {
+      color: #c07000;
+    }
+
+    .dl-danger {
+      color: var(--r);
+    }
+
+    .dl-done {
+      color: var(--text4);
+      font-weight: 400;
+    }
+
+    [data-theme="dark"] .dl-ok {
+      color: var(--g);
+    }
+
+    [data-theme="dark"] .dl-warn {
+      color: #fcd34d;
+    }
+
+    /* ═══════════════════════════════════════════
+   MODAL
+═══════════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 20, 5, 0.5);
+      backdrop-filter: blur(6px);
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 28px;
+      box-shadow: var(--shadow-lg);
+      animation: modalIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .modal-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+
+    .modal-sub {
+      font-size: 12px;
+      color: var(--text3);
+      margin-bottom: 22px;
+    }
+
+    .f-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .f-group {
+      margin-bottom: 0;
+    }
+
+    .f-group.span2 {
+      grid-column: 1/-1;
+    }
+
+    .f-group+.f-group {
+      margin-top: 0;
+    }
+
+    .f-select {
+      width: 100%;
+      padding: 11px 14px;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border var(--transition);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236a8050' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 32px;
+    }
+
+    .f-select:focus {
+      border-color: var(--g);
+    }
+
+    .f-textarea {
+      width: 100%;
+      padding: 11px 14px;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      resize: vertical;
+      min-height: 80px;
+      transition: border var(--transition);
+    }
+
+    .f-textarea:focus {
+      border-color: var(--g);
+    }
+
+    .f-readonly {
+      background: var(--surface3) !important;
+      cursor: default;
+    }
+
+    .f-hint {
+      font-size: 11px;
+      color: var(--text4);
+      margin-top: 4px;
+    }
+
+    .f-divider {
+      grid-column: 1/-1;
+      height: 1px;
+      background: var(--border);
+      margin: 4px 0;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-cancel {
+      padding: 10px 20px;
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text2);
+      font-size: 13px;
+      font-weight: 600;
+      transition: all var(--transition);
+    }
+
+    .btn-cancel:hover {
+      background: var(--surface2);
+    }
+
+    .btn-save {
+      padding: 10px 24px;
+      background: var(--g);
+      border: none;
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 700;
+      transition: all var(--transition);
+    }
+
+    .btn-save:hover {
+      background: var(--g-dark);
+      box-shadow: 0 4px 16px rgba(167, 225, 105, 0.4);
+    }
+
+    /* ═══════════════════════════════════════════
+   REVENUE PAGE
+═══════════════════════════════════════════ */
+    .rev-total-card {
+      background: var(--g);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .rev-total-icon {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      opacity: 0.5;
+    }
+
+    .rev-total-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(20, 40, 0, 0.7);
+      margin-bottom: 6px;
+    }
+
+    .rev-total-val {
+      font-size: 40px;
+      font-weight: 900;
+      color: #1a3008;
+      letter-spacing: -1.5px;
+      line-height: 1;
+    }
+
+    .rev-total-sub {
+      font-size: 12px;
+      color: rgba(20, 40, 0, 0.6);
+      margin-top: 6px;
+    }
+
+    .rev-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .rev-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+    }
+
+    .rev-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rev-card-icon {
+      display: flex;
+      align-items: center;
+      color: var(--text3);
+    }
+
+    .rev-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .rev-card-count {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text3);
+      font-weight: 500;
+    }
+
+    .rev-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rev-row:last-child {
+      border-bottom: none;
+    }
+
+    .rev-row-label {
+      font-size: 12.5px;
+      color: var(--text2);
+    }
+
+    .rev-row-val {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+    }
+
+    .rev-row-val.green {
+      color: #2a6a00;
+    }
+
+    .rev-row-val.red {
+      color: var(--r);
+    }
+
+    [data-theme="dark"] .rev-row-val.green {
+      color: #a7e169;
+    }
+
+    /* ═══════════════════════════════════════════
+   ADMIN PAGE
+═══════════════════════════════════════════ */
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .user-list-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .user-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+
+    .user-item:last-child {
+      border-bottom: none;
+    }
+
+    .user-item:hover {
+      background: var(--surface2);
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      background: var(--g-pale);
+      border: 2px solid var(--g);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text2);
+      flex-shrink: 0;
+    }
+
+    .user-info {}
+
+    .user-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .user-meta {
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    .user-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 4px;
+    }
+
+    /* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+    #toastContainer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      background: var(--text);
+      color: var(--bg);
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: var(--shadow-md);
+      animation: toastIn 0.3s ease both;
+      max-width: 280px;
+    }
+
+    .toast.success {
+      background: #2d6a00;
+      color: #fff;
+    }
+
+    .toast.error {
+      background: var(--r);
+      color: #fff;
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+   CONFIRM DIALOG
+═══════════════════════════════════════════ */
+    .confirm-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 20, 5, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 600;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .confirm-overlay.open {
+      display: flex;
+    }
+
+    .confirm-box {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      max-width: 360px;
+      width: 90%;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .confirm-icon {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--r);
+    }
+
+    .confirm-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .confirm-msg {
+      font-size: 13px;
+      color: var(--text2);
+      margin-bottom: 20px;
+    }
+
+    .confirm-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .btn-confirm-no {
+      padding: 9px 24px;
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      transition: all var(--transition);
+    }
+
+    .btn-confirm-no:hover {
+      background: var(--surface2);
+    }
+
+    .btn-confirm-yes {
+      padding: 9px 24px;
+      background: var(--r);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+      transition: all var(--transition);
+    }
+
+    .btn-confirm-yes:hover {
+      background: var(--r-dark);
+    }
+
+    /* ═══════════════════════════════════════════
+   MISC
+═══════════════════════════════════════════ */
+    .money {
+      font-family: 'DM Mono', monospace;
+      font-size: 12.5px;
+    }
+
+    .profit-positive {
+      color: #2a6a00;
+      font-weight: 700;
+    }
+
+    .profit-negative {
+      color: var(--r);
+      font-weight: 700;
+    }
+
+    [data-theme="dark"] .profit-positive {
+      color: #a7e169;
+    }
+
+    @media (max-width: 1100px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        width: 200px;
+      }
+
+      .main-content {
+        margin-left: 200px;
+        padding: 20px;
+      }
+
+      --sidebar-w: 200px;
+    }
+
+    @media (max-width: 640px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 16px;
+      }
+
+      .rev-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══ LOGIN ═══ -->
+  <div id="loginScreen">
+    <div class="login-wrap">
+      <div class="login-brand">
+        <div class="login-mark"><img
+            src="https://res.cloudinary.com/ddkd9lxpr/image/upload/v1768125759/logo-green_wzaqzh.png"
+            style="width:44px;height:44px;object-fit:contain;" alt="SM Pro"></div>
+        <h1>SM Pro</h1>
+        <p>Service Manager Dashboard</p>
+      </div>
+      <div class="login-card">
+        <h2>ဝင်ရောက်မည် / Sign In</h2>
+        <div class="f-group">
+          <label class="f-label">Username</label>
+          <input class="f-input" id="loginUser" placeholder="username" autocomplete="username">
+        </div>
+        <div class="f-group" style="margin-top:12px">
+          <label class="f-label">Password</label>
+          <div class="pass-wrap">
+            <input class="f-input" type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"
+              onkeydown="if(event.key==='Enter')doLogin()">
+            <button type="button" class="pass-toggle" onclick="togglePassVis('loginPass',this)" tabindex="-1"
+              aria-label="Show password"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg></button>
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <button class="btn-primary" id="loginBtn" onclick="doLogin()">ဝင်ရောက်မည် / Login</button>
+        </div>
+        <div class="login-err" id="loginErr">Username သို့မဟုတ် Password မှားနေသည်</div>
+        <div class="login-lockout" id="loginLockout">အကြိမ်ကြိမ် မှားနေသဖြင့် ခေတ္တ ပိတ်ထားပါသည်<span
+            class="lockout-timer" id="lockoutTimer">30</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ APP ═══ -->
+  <div id="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sb-logo">
+        <div class="sb-logo-icon"><img
+            src="https://res.cloudinary.com/ddkd9lxpr/image/upload/v1768125759/logo-green_wzaqzh.png"
+            style="width:22px;height:22px;object-fit:contain;" alt="logo"></div>
+        <div>
+          <div class="sb-logo-text">SM Pro</div>
+          <div class="sb-logo-sub">Service Manager</div>
+        </div>
+      </div>
+
+      <div class="sb-section">
+        <div class="sb-section-label">Overview</div>
+        <div class="nav-item active" data-page="dashboard" onclick="nav(this)">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" />
+            </svg></span> Dashboard
+        </div>
+      </div>
+
+      <div class="sb-section" style="margin-top:8px">
+        <div class="sb-section-label">Services</div>
+        <div class="nav-item" data-page="boosting" onclick="nav(this)">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+            </svg></span> FB Boosting
+          <span class="nav-badge" id="nb-boost">0</span>
+        </div>
+        <div class="nav-item" data-page="logo" onclick="nav(this)">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08" />
+              <path
+                d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1 1 2.48 1.02 3.5 1.02 2.2 0 3.99-1.8 4-4 .01-1.16-.94-2.06-2.5-2.06z" />
+            </svg></span> Logo Design
+          <span class="nav-badge" id="nb-logo">0</span>
+        </div>
+        <div class="nav-item" data-page="website" onclick="nav(this)">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <path d="M8 21h8M12 17v4" />
+            </svg></span> Website Design
+          <span class="nav-badge" id="nb-web">0</span>
+        </div>
+        <div class="nav-item" data-page="social" onclick="nav(this)">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg></span> Social Media
+          <span class="nav-badge" id="nb-social">0</span>
+        </div>
+      </div>
+
+      <div class="sb-divider"></div>
+
+      <div class="sb-section">
+        <div class="sb-section-label">Finance</div>
+        <div class="nav-item" data-page="revenue" onclick="nav(this)">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23" />
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg></span> Revenue
+        </div>
+      </div>
+
+      <div class="sb-divider"></div>
+
+      <div class="sb-section" id="adminNavSection" style="display:none">
+        <div class="sb-section-label">System</div>
+        <div class="nav-item" data-page="admin" onclick="nav(this)">
+          <span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg></span> User Management
+        </div>
+      </div>
+
+      <div class="sb-bottom">
+        <div class="sb-user-card">
+          <div class="sb-user-name" id="sbUserName">-</div>
+          <div class="sb-user-role" id="sbUserRole">-</div>
+        </div>
+        <button class="sb-btn" onclick="toggleTheme()">
+          <span id="themeIcon" style="display:flex;align-items:center"><svg width="15" height="15" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg></span> <span id="themeLabel">Dark Mode</span>
+        </button>
+        <button class="sb-btn danger" onclick="doLogout()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16,17 21,12 16,7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg> ထွက်မည် / Logout</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="p-dashboard">
+        <div class="page-header">
+          <div class="page-title-wrap">
+            <div class="page-title">Dashboard</div>
+            <div class="page-sub">Services အားလုံး Overview · Today's Snapshot</div>
+          </div>
+        </div>
+        <div class="stats-grid" id="dash-stats"></div>
+        <div class="table-card">
+          <div class="table-head">
+            <span class="table-head-title">Active Boostings — ကုန်ဆုံးမည့်ရက် နီးနေသည်</span>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Post / Page</th>
+                  <th>ကုန်ဆုံးမည့်ရက်</th>
+                  <th>ကျန်ရက်</th>
+                  <th>Amount $</th>
+                  <th>အမြတ် MMK</th>
+                </tr>
+              </thead>
+              <tbody id="dash-boost-list"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-head">
+            <span class="table-head-title">Pending Payments — ငွေမရသေးသည်များ</span>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Service</th>
+                  <th>Total MMK</th>
+                  <th>ရငွေ MMK</th>
+                  <th>ကျန်ငွေ MMK</th>
+                </tr>
+              </thead>
+              <tbody id="dash-pending-list"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOSTING -->
+      <div class="page" id="p-boosting">
+        <div class="page-header">
+          <div class="page-title-wrap">
+            <div class="page-title">FB Boosting</div>
+            <div class="page-sub">Facebook Boosting Service · Clients များ စီမံခန့်ခွဲမှု</div>
+          </div>
+          <button class="btn-add" onclick="openModal('boost')">+ Client အသစ်ထည့်</button>
+        </div>
+        <div class="stats-grid" id="boost-stats"></div>
+        <div class="table-card">
+          <div class="table-head">
+            <span class="table-head-title">Boosting Records</span>
+            <div class="table-head-right">
+              <input class="search-box" placeholder="ရှာမည်..." oninput="filterTable('boost-list',this.value)">
+            </div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Post / Page</th>
+                  <th>Duration</th>
+                  <th>စတင်ရက်</th>
+                  <th>ကုန်ဆုံးရက်</th>
+                  <th>ကျန်ရက်</th>
+                  <th>$ Amount</th>
+                  <th>Customer MMK</th>
+                  <th>Cost MMK</th>
+                  <th>အမြတ် MMK</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="boost-list"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOGO -->
+      <div class="page" id="p-logo">
+        <div class="page-header">
+          <div class="page-title-wrap">
+            <div class="page-title">Logo Design</div>
+            <div class="page-sub">Logo Design Projects · Client စီမံမှု</div>
+          </div>
+          <button class="btn-add" onclick="openModal('logo')">+ Project အသစ်ထည့်</button>
+        </div>
+        <div class="stats-grid" id="logo-stats"></div>
+        <div class="table-card">
+          <div class="table-head">
+            <span class="table-head-title">Logo Projects</span>
+            <div class="table-head-right">
+              <input class="search-box" placeholder="ရှာမည်..." oninput="filterTable('logo-list',this.value)">
+            </div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Package</th>
+                  <th>စတင်ရက်</th>
+                  <th>Deadline</th>
+                  <th>Price MMK</th>
+                  <th>ရငွေ MMK</th>
+                  <th>ကျန်ငွေ MMK</th>
+                  <th>Payment</th>
+                  <th>Revision</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="logo-list"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEBSITE -->
+      <div class="page" id="p-website">
+        <div class="page-header">
+          <div class="page-title-wrap">
+            <div class="page-title">Website Design</div>
+            <div class="page-sub">Website Design Projects · Client စီမံမှု</div>
+          </div>
+          <button class="btn-add" onclick="openModal('web')">+ Project အသစ်ထည့်</button>
+        </div>
+        <div class="stats-grid" id="web-stats"></div>
+        <div class="table-card">
+          <div class="table-head">
+            <span class="table-head-title">Website Projects</span>
+            <div class="table-head-right">
+              <input class="search-box" placeholder="ရှာမည်..." oninput="filterTable('web-list',this.value)">
+            </div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Type</th>
+                  <th>Pages</th>
+                  <th>Tech</th>
+                  <th>စတင်ရက်</th>
+                  <th>Deadline</th>
+                  <th>Price MMK</th>
+                  <th>ရငွေ MMK</th>
+                  <th>ကျန်ငွေ MMK</th>
+                  <th>Payment</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="web-list"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOCIAL MEDIA -->
+      <div class="page" id="p-social">
+        <div class="page-header">
+          <div class="page-title-wrap">
+            <div class="page-title">Social Media Package</div>
+            <div class="page-sub">Social Media Management Clients · စီမံမှု</div>
+          </div>
+          <button class="btn-add" onclick="openModal('social')">+ Client အသစ်ထည့်</button>
+        </div>
+        <div class="stats-grid" id="social-stats"></div>
+        <div class="table-card">
+          <div class="table-head">
+            <span class="table-head-title">Social Media Clients</span>
+            <div class="table-head-right">
+              <input class="search-box" placeholder="ရှာမည်..." oninput="filterTable('social-list',this.value)">
+            </div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Package</th>
+                  <th>Platforms</th>
+                  <th>Posts/Mo</th>
+                  <th>Duration</th>
+                  <th>စတင်ရက်</th>
+                  <th>Price/Mo MMK</th>
+                  <th>ရငွေ MMK</th>
+                  <th>Payment</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="social-list"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- REVENUE -->
+      <div class="page" id="p-revenue">
+        <div class="page-header">
+          <div class="page-title-wrap">
+            <div class="page-title">Revenue Summary</div>
+            <div class="page-sub">Services အားလုံး · ဝင်ငွေ / အမြတ် နှစ်ချုပ်</div>
+          </div>
+        </div>
+        <div class="rev-total-card" id="rev-total"></div>
+        <div class="rev-grid" id="rev-grid"></div>
+      </div>
+
+      <!-- ADMIN -->
+      <div class="page" id="p-admin">
+        <div class="page-header">
+          <div class="page-title-wrap">
+            <div class="page-title">User Management</div>
+            <div class="page-sub">System Users · ဝင်ရောက်ခွင့် စီမံမှု</div>
+          </div>
+        </div>
+        <div class="admin-grid">
+          <div>
+            <div class="table-card" id="user-list-wrap">
+              <div class="table-head"><span class="table-head-title">Users</span></div>
+              <div id="user-list"></div>
+            </div>
+          </div>
+          <div>
+            <div class="table-card">
+              <div class="table-head"><span class="table-head-title">User အသစ်ဖန်တီးမည်</span></div>
+              <div style="padding:20px">
+                <div class="f-group" style="margin-bottom:12px">
+                  <label class="f-label">Username</label>
+                  <input class="f-input" id="nu-user" placeholder="username">
+                </div>
+                <div class="f-group" style="margin-bottom:12px">
+                  <label class="f-label">Display Name</label>
+                  <input class="f-input" id="nu-name" placeholder="မြင့်မြတ်">
+                </div>
+                <div class="f-group" style="margin-bottom:12px">
+                  <label class="f-label">Password (အနည်းဆုံး ၆ လုံး)</label>
+                  <div class="pass-wrap">
+                    <input class="f-input" type="password" id="nu-pass" placeholder="••••••••"
+                      oninput="showPassStrength(this.value,'nuPassStr')">
+                    <button type="button" class="pass-toggle" onclick="togglePassVis('nu-pass',this)" tabindex="-1"
+                      aria-label="Show password"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg></button>
+                  </div>
+                  <div class="pass-strength" id="nuPassStr"></div>
+                </div>
+                <div class="f-group" style="margin-bottom:16px">
+                  <label class="f-label">Role</label>
+                  <select class="f-select" id="nu-role">
+                    <option value="viewer">Viewer — ကြည့်ရှုသာ</option>
+                    <option value="admin">Admin — အပြည့်အဝ</option>
+                  </select>
+                </div>
+                <button class="btn-primary" onclick="createUser()">User ဖန်တီးမည်</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModalBg(event)">
+    <div class="modal" id="modalBody"></div>
+  </div>
+
+  <!-- CONFIRM -->
+  <div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-box">
+      <div class="confirm-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+          <line x1="12" y1="9" x2="12" y2="13" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg></div>
+      <div class="confirm-title">သေချာပြီလား?</div>
+      <div class="confirm-msg" id="confirmMsg">ဤ record ကို ဖျက်မည်။ ပြန်မရနိုင်ပါ။</div>
+      <div class="confirm-btns">
+        <button class="btn-confirm-no" onclick="closeConfirm()">မဖျက်တော့</button>
+        <button class="btn-confirm-yes" id="confirmYesBtn">ဖျက်မည်</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toastContainer"></div>
+
+  <script>
+    /* ═══════════════════════════════════════════════════════
+       INDEXEDDB
+    ═══════════════════════════════════════════════════════ */
+    const DB_NAME = 'SMPro_DB';
+    const DB_VER = 2;
+    let db;
+
+    function initDB() {
+      return new Promise((res, rej) => {
+        const req = indexedDB.open(DB_NAME, DB_VER);
+        req.onupgradeneeded = e => {
+          const d = e.target.result;
+          ['boost', 'logo', 'web', 'social', 'users', 'sessions'].forEach(store => {
+            if (!d.objectStoreNames.contains(store))
+              d.createObjectStore(store, { keyPath: 'id' });
+          });
+        };
+        req.onsuccess = e => { db = e.target.result; res(db); };
+        req.onerror = () => rej(req.error);
+      });
+    }
+
+    function dbGet(store) {
+      return new Promise((res, rej) => {
+        const tx = db.transaction(store, 'readonly');
+        const req = tx.objectStore(store).getAll();
+        req.onsuccess = () => res(req.result || []);
+        req.onerror = () => rej(req.error);
+      });
+    }
+    function dbPut(store, obj) {
+      return new Promise((res, rej) => {
+        const tx = db.transaction(store, 'readwrite');
+        const req = tx.objectStore(store).put(obj);
+        req.onsuccess = () => res(req.result);
+        req.onerror = () => rej(req.error);
+      });
+    }
+    function dbDelete(store, id) {
+      return new Promise((res, rej) => {
+        const tx = db.transaction(store, 'readwrite');
+        const req = tx.objectStore(store).delete(id);
+        req.onsuccess = () => res();
+        req.onerror = () => rej(req.error);
+      });
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       AUTH
+    ═══════════════════════════════════════════════════════ */
+    let currentUser = null;
+    const SESSION_KEY = 'smpro_session';
+    const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+    let _sessionTimer = null;
+
+    /* ─── PASSWORD HASHING (SHA-256 + salt) ─── */
+    function generateSalt() {
+      const arr = new Uint8Array(16);
+      crypto.getRandomValues(arr);
+      return Array.from(arr, b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function hashPassword(password, salt) {
+      const data = new TextEncoder().encode(salt + password);
+      const hashBuf = await crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(hashBuf), b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    /* ─── BRUTE FORCE PROTECTION ─── */
+    let _loginAttempts = 0;
+    let _lockoutUntil = 0;
+    let _lockoutInterval = null;
+    const MAX_ATTEMPTS = 5;
+    const LOCKOUT_SECONDS = 30;
+
+    function isLockedOut() {
+      return Date.now() < _lockoutUntil;
+    }
+
+    function startLockout() {
+      _lockoutUntil = Date.now() + LOCKOUT_SECONDS * 1000;
+      _loginAttempts = 0;
+      const errEl = document.getElementById('loginErr');
+      const lockEl = document.getElementById('loginLockout');
+      const timerEl = document.getElementById('lockoutTimer');
+      const btn = document.getElementById('loginBtn');
+      errEl.style.display = 'none';
+      lockEl.style.display = 'block';
+      btn.disabled = true;
+      _lockoutInterval = setInterval(() => {
+        const left = Math.ceil((_lockoutUntil - Date.now()) / 1000);
+        if (left <= 0) {
+          clearInterval(_lockoutInterval);
+          _lockoutInterval = null;
+          lockEl.style.display = 'none';
+          btn.disabled = false;
+        } else {
+          timerEl.textContent = left;
+        }
+      }, 500);
+    }
+
+    /* ─── SESSION TOKEN ─── */
+    function generateToken() {
+      const arr = new Uint8Array(32);
+      crypto.getRandomValues(arr);
+      return Array.from(arr, b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function resetSessionTimer() {
+      if (_sessionTimer) clearTimeout(_sessionTimer);
+      _sessionTimer = setTimeout(() => {
+        toast('Session ကုန်ဆုံးသွားပါပြီ။ ပြန်လည်ဝင်ရောက်ပါ', 'error');
+        doLogout();
+      }, SESSION_TIMEOUT_MS);
+      const s = sessionStorage.getItem(SESSION_KEY);
+      if (s) {
+        try {
+          const data = JSON.parse(s);
+          data.lastActivity = Date.now();
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(data));
+        } catch (e) { }
+      }
+    }
+
+    function startActivityTracking() {
+      ['click', 'keydown', 'mousemove', 'scroll', 'touchstart'].forEach(evt => {
+        document.addEventListener(evt, () => resetSessionTimer(), { passive: true });
+      });
+      resetSessionTimer();
+    }
+
+    /* ─── INIT USERS (with hashed password) ─── */
+    async function initUsers() {
+      const users = await dbGet('users');
+      if (!users.length) {
+        const salt = generateSalt();
+        const hash = await hashPassword('admin123', salt);
+        await dbPut('users', {
+          id: 'user_admin', username: 'admin',
+          name: 'Administrator', salt, hash, role: 'admin'
+        });
+      } else {
+        // Migrate plain-text passwords to hashed
+        for (const u of users) {
+          if (u.password && !u.hash) {
+            const salt = generateSalt();
+            const hash = await hashPassword(u.password, salt);
+            u.salt = salt;
+            u.hash = hash;
+            delete u.password;
+            await dbPut('users', u);
+          }
+        }
+      }
+    }
+
+    /* ─── LOGIN ─── */
+    async function doLogin() {
+      if (isLockedOut()) return;
+      const u = document.getElementById('loginUser').value.trim();
+      const p = document.getElementById('loginPass').value;
+      if (!u || !p) return;
+
+      const users = await dbGet('users');
+      let found = null;
+      for (const user of users) {
+        if (user.username === u) {
+          const hash = await hashPassword(p, user.salt);
+          if (hash === user.hash) found = user;
+          break;
+        }
+      }
+
+      if (found) {
+        _loginAttempts = 0;
+        currentUser = found;
+        const token = generateToken();
+        const sessionData = {
+          token, id: found.id, username: found.username,
+          name: found.name, role: found.role,
+          createdAt: Date.now(), lastActivity: Date.now()
+        };
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+        await dbPut('sessions', { id: token, userId: found.id, createdAt: Date.now() });
+        document.getElementById('loginScreen').classList.add('hidden');
+        setTimeout(() => {
+          document.getElementById('loginScreen').style.display = 'none';
+          startApp();
+        }, 400);
+      } else {
+        _loginAttempts++;
+        if (_loginAttempts >= MAX_ATTEMPTS) {
+          startLockout();
+        } else {
+          const errEl = document.getElementById('loginErr');
+          errEl.style.display = 'block';
+          errEl.textContent = `Username/Password မှားနေသည် (${_loginAttempts}/${MAX_ATTEMPTS})`;
+        }
+        document.getElementById('loginPass').value = '';
+      }
+    }
+
+    /* ─── LOGOUT ─── */
+    async function doLogout() {
+      const s = sessionStorage.getItem(SESSION_KEY);
+      if (s) {
+        try {
+          const data = JSON.parse(s);
+          if (data.token) await dbDelete('sessions', data.token);
+        } catch (e) { }
+      }
+      sessionStorage.removeItem(SESSION_KEY);
+      currentUser = null;
+      if (_sessionTimer) clearTimeout(_sessionTimer);
+      location.reload();
+    }
+
+    /* ─── SESSION CHECK ─── */
+    async function checkSession() {
+      const s = sessionStorage.getItem(SESSION_KEY);
+      if (!s) return false;
+      try {
+        const data = JSON.parse(s);
+        if (Date.now() - data.lastActivity > SESSION_TIMEOUT_MS) {
+          sessionStorage.removeItem(SESSION_KEY);
+          return false;
+        }
+        const sessions = await dbGet('sessions');
+        const valid = sessions.find(x => x.id === data.token && x.userId === data.id);
+        if (!valid) { sessionStorage.removeItem(SESSION_KEY); return false; }
+        const users = await dbGet('users');
+        const user = users.find(x => x.id === data.id);
+        if (!user) { sessionStorage.removeItem(SESSION_KEY); return false; }
+        currentUser = user;
+        return true;
+      } catch (e) {
+        sessionStorage.removeItem(SESSION_KEY);
+        return false;
+      }
+    }
+
+    /* ─── PASSWORD TOGGLE & STRENGTH ─── */
+    function togglePassVis(inputId, btn) {
+      const inp = document.getElementById(inputId);
+      const isPass = inp.type === 'password';
+      inp.type = isPass ? 'text' : 'password';
+      btn.innerHTML = isPass
+        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    }
+
+    function showPassStrength(val, elId) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      if (!val) { el.textContent = ''; el.className = 'pass-strength'; return; }
+      if (val.length < 6) {
+        el.textContent = 'အားနည်း — အနည်းဆုံး ၆ လုံးထည့်ပါ';
+        el.className = 'pass-strength weak';
+      } else if (val.length < 10) {
+        el.textContent = 'OK — သုံးလို့ရပါပြီ';
+        el.className = 'pass-strength ok';
+      } else {
+        el.textContent = 'အားကောင်း ✓';
+        el.className = 'pass-strength strong';
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       HELPERS
+    ═══════════════════════════════════════════════════════ */
+    function uid() { return 'id_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+    function today() { return new Date().toISOString().split('T')[0]; }
+    function fmtDate(d) { return d ? d.split('-').reverse().join('/') : '—'; }
+    function addDays(dateStr, n) {
+      const d = new Date(dateStr); d.setDate(d.getDate() + parseInt(n));
+      return d.toISOString().split('T')[0];
+    }
+    function daysLeft(dateStr) {
+      if (!dateStr) return null;
+      return Math.ceil((new Date(dateStr) - new Date(today())) / 86400000);
+    }
+    function fmtMMK(n) { return parseInt(n || 0).toLocaleString(); }
+    function fmtN(n, d = 0) { return parseFloat(n || 0).toFixed(d); }
+    function v(id) { const e = document.getElementById(id); return e ? e.value : ''; }
+
+    function daysLeftEl(dateStr) {
+      const n = daysLeft(dateStr);
+      if (n === null) return '<span class="dl dl-done">—</span>';
+      if (n < 0) return `<span class="dl dl-danger">ကုန်ပြီ (${Math.abs(n)}ရက်)</span>`;
+      if (n === 0) return `<span class="dl dl-danger">ယနေ့ ကုန်</span>`;
+      if (n <= 3) return `<span class="dl dl-danger">${n} ရက်</span>`;
+      if (n <= 7) return `<span class="dl dl-warn">${n} ရက်</span>`;
+      return `<span class="dl dl-ok">${n} ရက်</span>`;
+    }
+
+    function badge(type) {
+      const map = {
+        active: ['badge-green', 'Active'],
+        completed: ['badge-blue', 'ပြီးပြီ / Done'],
+        'in-progress': ['badge-yellow', 'လုပ်နေ'],
+        pending: ['badge-gray', 'Pending'],
+        cancelled: ['badge-red', 'ဖျက်သိမ်း'],
+        full: ['badge-green', 'အပြည့်ရ'],
+        half: ['badge-yellow', 'တစ်ဝက်ရ'],
+        none: ['badge-red', 'မရသေး'],
+      };
+      const [cls, lbl] = map[type] || ['badge-gray', type];
+      return `<span class="badge ${cls}">${lbl}</span>`;
+    }
+
+    function toast(msg, type = 'success') {
+      const t = document.createElement('div');
+      t.className = `toast ${type}`; t.textContent = msg;
+      document.getElementById('toastContainer').appendChild(t);
+      setTimeout(() => t.remove(), 3000);
+    }
+
+    let confirmCallback = null;
+    function showConfirm(msg, cb) {
+      document.getElementById('confirmMsg').textContent = msg;
+      confirmCallback = cb;
+      document.getElementById('confirmOverlay').classList.add('open');
+      document.getElementById('confirmYesBtn').onclick = () => { closeConfirm(); cb && cb(); };
+    }
+    function closeConfirm() { document.getElementById('confirmOverlay').classList.remove('open'); }
+
+    /* ═══════════════════════════════════════════════════════
+       NAVIGATION
+    ═══════════════════════════════════════════════════════ */
+    function nav(el) {
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      el.classList.add('active');
+      const page = el.dataset.page;
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('p-' + page).classList.add('active');
+      renderPage(page);
+    }
+
+    function renderPage(id) {
+      if (id === 'dashboard') renderDashboard();
+      else if (id === 'boosting') renderBoosting();
+      else if (id === 'logo') renderLogo();
+      else if (id === 'website') renderWebsite();
+      else if (id === 'social') renderSocial();
+      else if (id === 'revenue') renderRevenue();
+      else if (id === 'admin') renderAdmin();
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       THEME
+    ═══════════════════════════════════════════════════════ */
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const next = isDark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('smpro_theme', next);
+      document.getElementById('themeIcon').innerHTML = next === 'dark' ? '<svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"5\"/><line x1=\"12\" y1=\"1\" x2=\"12\" y2=\"3\"/><line x1=\"12\" y1=\"21\" x2=\"12\" y2=\"23\"/><line x1=\"4.22\" y1=\"4.22\" x2=\"5.64\" y2=\"5.64\"/><line x1=\"18.36\" y1=\"18.36\" x2=\"19.78\" y2=\"19.78\"/><line x1=\"1\" y1=\"12\" x2=\"3\" y2=\"12\"/><line x1=\"21\" y1=\"12\" x2=\"23\" y2=\"12\"/><line x1=\"4.22\" y1=\"19.78\" x2=\"5.64\" y2=\"18.36\"/><line x1=\"18.36\" y1=\"5.64\" x2=\"19.78\" y2=\"4.22\"/></svg>' : '<svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"/></svg>';
+      document.getElementById('themeLabel').textContent = next === 'dark' ? 'Light Mode' : 'Dark Mode';
+    }
+    (function () {
+      const t = localStorage.getItem('smpro_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+      // will be updated after app starts
+    })();
+
+    /* ═══════════════════════════════════════════════════════
+       START APP
+    ═══════════════════════════════════════════════════════ */
+    async function startApp() {
+      document.getElementById('app').classList.add('visible');
+      document.getElementById('sbUserName').textContent = currentUser.name;
+      document.getElementById('sbUserRole').textContent = currentUser.role === 'admin' ? 'Admin' : 'Viewer';
+      if (currentUser.role === 'admin') {
+        document.getElementById('adminNavSection').style.display = '';
+      }
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.getElementById('themeIcon').innerHTML = isDark ? '<svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"5\"/><line x1=\"12\" y1=\"1\" x2=\"12\" y2=\"3\"/><line x1=\"12\" y1=\"21\" x2=\"12\" y2=\"23\"/><line x1=\"4.22\" y1=\"4.22\" x2=\"5.64\" y2=\"5.64\"/><line x1=\"18.36\" y1=\"18.36\" x2=\"19.78\" y2=\"19.78\"/><line x1=\"1\" y1=\"12\" x2=\"3\" y2=\"12\"/><line x1=\"21\" y1=\"12\" x2=\"23\" y2=\"12\"/><line x1=\"4.22\" y1=\"19.78\" x2=\"5.64\" y2=\"18.36\"/><line x1=\"18.36\" y1=\"5.64\" x2=\"19.78\" y2=\"4.22\"/></svg>' : '<svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"/></svg>';
+      document.getElementById('themeLabel').textContent = isDark ? 'Light Mode' : 'Dark Mode';
+      await updateBadges();
+      renderDashboard();
+      startActivityTracking();
+    }
+
+    async function updateBadges() {
+      const b = await dbGet('boost');
+      const l = await dbGet('logo');
+      const w = await dbGet('web');
+      const s = await dbGet('social');
+      document.getElementById('nb-boost').textContent = b.filter(x => x.status === 'active').length;
+      document.getElementById('nb-logo').textContent = l.filter(x => x.status === 'in-progress').length;
+      document.getElementById('nb-web').textContent = w.filter(x => x.status === 'in-progress').length;
+      document.getElementById('nb-social').textContent = s.filter(x => x.status === 'active').length;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       DASHBOARD
+    ═══════════════════════════════════════════════════════ */
+    async function renderDashboard() {
+      const [boosts, logos, webs, socials] = await Promise.all([
+        dbGet('boost'), dbGet('logo'), dbGet('web'), dbGet('social')
+      ]);
+      const totalProfit =
+        boosts.reduce((s, b) => s + (parseInt(b.profit) || 0), 0) +
+        logos.reduce((s, l) => s + (parseInt(l.received) || 0), 0) +
+        webs.reduce((s, w) => s + (parseInt(w.received) || 0), 0) +
+        socials.reduce((s, x) => s + (parseInt(x.received) || 0), 0);
+
+      document.getElementById('dash-stats').innerHTML = `
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><div class="stat-val">${boosts.filter(b => b.status === 'active').length}</div><div class="stat-label">Active Boostings</div></div>
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1 1 2.48 1.02 3.5 1.02 2.2 0 3.99-1.8 4-4 .01-1.16-.94-2.06-2.5-2.06z"/></svg></span><div class="stat-val">${logos.filter(l => l.status === 'in-progress').length}</div><div class="stat-label">Logo (လုပ်ဆဲ)</div></div>
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span><div class="stat-val">${webs.filter(w => w.status === 'in-progress').length}</div><div class="stat-label">Website (လုပ်ဆဲ)</div></div>
+    <div class="stat-card gray-accent"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><div class="stat-val stat-val-sm">${fmtMMK(totalProfit)}</div><div class="stat-label">Total Revenue (MMK)</div></div>`;
+
+      // Active boostings expiring soon
+      const active = boosts.filter(b => b.status === 'active').sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
+      const bTb = document.getElementById('dash-boost-list');
+      if (!active.length) {
+        bTb.innerHTML = `<tr class="empty-row"><td colspan="6"><span class="empty-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span>Active Boosting မရှိပါ</td></tr>`;
+      } else {
+        bTb.innerHTML = active.map(b => `<tr>
+      <td><div class="cell-name">${b.customer}</div><div class="cell-sub">${b.phone || ''}</div></td>
+      <td>${b.post || '—'}</td>
+      <td class="money">${fmtDate(b.endDate)}</td>
+      <td>${daysLeftEl(b.endDate)}</td>
+      <td class="money">$${fmtN(b.amount, 2)}</td>
+      <td class="money profit-positive">${fmtMMK(b.profit)} MMK</td>
+    </tr>`).join('');
+      }
+
+      // Pending payments
+      const pending = [];
+      logos.filter(l => l.payment !== 'full').forEach(l => {
+        const rem = (parseInt(l.price) || 0) - (parseInt(l.received) || 0);
+        if (rem > 0) pending.push({ name: l.customer, service: 'Logo Design', total: l.price, received: l.received, remain: rem });
+      });
+      webs.filter(w => w.payment !== 'full').forEach(w => {
+        const rem = (parseInt(w.price) || 0) - (parseInt(w.received) || 0);
+        if (rem > 0) pending.push({ name: w.customer, service: 'Website', total: w.price, received: w.received, remain: rem });
+      });
+      socials.filter(s => s.payment !== 'full').forEach(s => {
+        const rem = (parseInt(s.price) || 0) - (parseInt(s.received) || 0);
+        if (rem > 0) pending.push({ name: s.customer, service: 'Social Media', total: s.price, received: s.received, remain: rem });
+      });
+      const pTb = document.getElementById('dash-pending-list');
+      if (!pending.length) {
+        pTb.innerHTML = `<tr class="empty-row"><td colspan="5"><span class="empty-icon"></span>ကျန်ငွေ မရှိပါ — အားလုံးရပြီး!</td></tr>`;
+      } else {
+        pTb.innerHTML = pending.map(p => `<tr>
+      <td><div class="cell-name">${p.name}</div></td>
+      <td><span class="badge badge-blue">${p.service}</span></td>
+      <td class="money">${fmtMMK(p.total)}</td>
+      <td class="money profit-positive">${fmtMMK(p.received)}</td>
+      <td class="money profit-negative">${fmtMMK(p.remain)}</td>
+    </tr>`).join('');
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       BOOSTING
+    ═══════════════════════════════════════════════════════ */
+    async function renderBoosting() {
+      const data = await dbGet('boost');
+      const active = data.filter(b => b.status === 'active').length;
+      const totalAmt = data.reduce((s, b) => s + (parseFloat(b.amount) || 0), 0);
+      const totalCost = data.reduce((s, b) => s + (parseInt(b.cost) || 0), 0);
+      const totalProfit = data.reduce((s, b) => s + (parseInt(b.profit) || 0), 0);
+
+      document.getElementById('boost-stats').innerHTML = `
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div class="stat-val">${data.length}</div><div class="stat-label">Total Clients</div></div>
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><div class="stat-val">${active}</div><div class="stat-label">Active</div></div>
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><div class="stat-val stat-val-sm">$${fmtN(totalAmt, 2)}</div><div class="stat-label">Total USD Amount</div></div>
+    <div class="stat-card gray-accent"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/><polyline points="17,6 23,6 23,12"/></svg></span><div class="stat-val stat-val-sm">${fmtMMK(totalProfit)}</div><div class="stat-label">Net Profit (MMK)</div></div>`;
+
+      const tb = document.getElementById('boost-list');
+      if (!data.length) {
+        tb.innerHTML = `<tr class="empty-row"><td colspan="12"><span class="empty-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>Boosting record မရှိသေး</td></tr>`;
+        return;
+      }
+      tb.innerHTML = data.map(b => `<tr data-row>
+    <td><div class="cell-name">${b.customer}</div><div class="cell-sub">${b.phone || ''}</div></td>
+    <td>${b.post || '—'}</td>
+    <td>${b.days || '—'} ရက်</td>
+    <td class="money">${fmtDate(b.startDate)}</td>
+    <td class="money">${fmtDate(b.endDate)}</td>
+    <td>${daysLeftEl(b.endDate)}</td>
+    <td class="money">$${fmtN(b.amount, 2)}</td>
+    <td class="money">${fmtMMK(b.custMMK)}</td>
+    <td class="money">${fmtMMK(b.cost)}</td>
+    <td class="money profit-positive">${fmtMMK(b.profit)}</td>
+    <td>${badge(b.status)}</td>
+    <td><button class="btn-ic" onclick="editItem('boost','${b.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>${currentUser.role === 'admin' ? `<button class="btn-ic del" onclick="delItem('boost','${b.id}','${b.customer}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>` : ''}</td>
+  </tr>`).join('');
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       LOGO
+    ═══════════════════════════════════════════════════════ */
+    async function renderLogo() {
+      const data = await dbGet('logo');
+      const totalPrice = data.reduce((s, l) => s + (parseInt(l.price) || 0), 0);
+      const totalRec = data.reduce((s, l) => s + (parseInt(l.received) || 0), 0);
+      const totalPend = totalPrice - totalRec;
+
+      document.getElementById('logo-stats').innerHTML = `
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div class="stat-val">${data.length}</div><div class="stat-label">Total Clients</div></div>
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1 1 2.48 1.02 3.5 1.02 2.2 0 3.99-1.8 4-4 .01-1.16-.94-2.06-2.5-2.06z"/></svg></span><div class="stat-val">${data.filter(l => l.status === 'in-progress').length}</div><div class="stat-label">လုပ်ဆဲ Projects</div></div>
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><div class="stat-val stat-val-sm">${fmtMMK(totalRec)}</div><div class="stat-label">ရငွေ (MMK)</div></div>
+    <div class="stat-card red-accent"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg></span><div class="stat-val stat-val-sm">${fmtMMK(totalPend)}</div><div class="stat-label">ကျန်ငွေ (MMK)</div></div>`;
+
+      const tb = document.getElementById('logo-list');
+      if (!data.length) {
+        tb.innerHTML = `<tr class="empty-row"><td colspan="11"><span class="empty-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1 1 2.48 1.02 3.5 1.02 2.2 0 3.99-1.8 4-4 .01-1.16-.94-2.06-2.5-2.06z"/></svg></span>Logo project မရှိသေး</td></tr>`;
+        return;
+      }
+      tb.innerHTML = data.map(l => {
+        const rec = parseInt(l.received) || 0, price = parseInt(l.price) || 0;
+        return `<tr data-row>
+      <td><div class="cell-name">${l.customer}</div><div class="cell-sub">${l.phone || ''}</div></td>
+      <td>${l.package || '—'}</td>
+      <td class="money">${fmtDate(l.startDate)}</td>
+      <td>${l.deadline ? `<div class="money">${fmtDate(l.deadline)}</div>${daysLeftEl(l.deadline)}` : '—'}</td>
+      <td class="money">${fmtMMK(price)}</td>
+      <td class="money profit-positive">${fmtMMK(rec)}</td>
+      <td class="money ${(price - rec) > 0 ? 'profit-negative' : ''}">${fmtMMK(price - rec)}</td>
+      <td>${badge(l.payment || 'none')}</td>
+      <td>${l.revision || 0}x</td>
+      <td>${badge(l.status || 'pending')}</td>
+      <td><button class="btn-ic" onclick="editItem('logo','${l.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>${currentUser.role === 'admin' ? `<button class="btn-ic del" onclick="delItem('logo','${l.id}','${l.customer}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>` : ''}</td>
+    </tr>`;
+      }).join('');
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       WEBSITE
+    ═══════════════════════════════════════════════════════ */
+    async function renderWebsite() {
+      const data = await dbGet('web');
+      const totalPrice = data.reduce((s, w) => s + (parseInt(w.price) || 0), 0);
+      const totalRec = data.reduce((s, w) => s + (parseInt(w.received) || 0), 0);
+
+      document.getElementById('web-stats').innerHTML = `
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span><div class="stat-val">${data.length}</div><div class="stat-label">Total Projects</div></div>
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><div class="stat-val">${data.filter(w => w.status === 'in-progress').length}</div><div class="stat-label">လုပ်ဆဲ</div></div>
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><div class="stat-val stat-val-sm">${fmtMMK(totalRec)}</div><div class="stat-label">ရငွေ (MMK)</div></div>
+    <div class="stat-card red-accent"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg></span><div class="stat-val stat-val-sm">${fmtMMK(totalPrice - totalRec)}</div><div class="stat-label">ကျန်ငွေ (MMK)</div></div>`;
+
+      const tb = document.getElementById('web-list');
+      if (!data.length) {
+        tb.innerHTML = `<tr class="empty-row"><td colspan="12"><span class="empty-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>Website project မရှိသေး</td></tr>`;
+        return;
+      }
+      tb.innerHTML = data.map(w => {
+        const rec = parseInt(w.received) || 0, price = parseInt(w.price) || 0;
+        return `<tr data-row>
+      <td><div class="cell-name">${w.customer}</div><div class="cell-sub">${w.phone || ''}</div></td>
+      <td>${w.type || '—'}</td>
+      <td>${w.pages || '—'} pages</td>
+      <td>${w.tech || '—'}</td>
+      <td class="money">${fmtDate(w.startDate)}</td>
+      <td>${w.deadline ? `<div class="money">${fmtDate(w.deadline)}</div>${daysLeftEl(w.deadline)}` : '—'}</td>
+      <td class="money">${fmtMMK(price)}</td>
+      <td class="money profit-positive">${fmtMMK(rec)}</td>
+      <td class="money ${(price - rec) > 0 ? 'profit-negative' : ''}">${fmtMMK(price - rec)}</td>
+      <td>${badge(w.payment || 'none')}</td>
+      <td>${badge(w.status || 'pending')}</td>
+      <td><button class="btn-ic" onclick="editItem('web','${w.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>${currentUser.role === 'admin' ? `<button class="btn-ic del" onclick="delItem('web','${w.id}','${w.customer}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>` : ''}</td>
+    </tr>`;
+      }).join('');
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       SOCIAL MEDIA
+    ═══════════════════════════════════════════════════════ */
+    async function renderSocial() {
+      const data = await dbGet('social');
+      const monthly = data.filter(s => s.status === 'active').reduce((s, x) => s + (parseInt(x.price) || 0), 0);
+      const totalRec = data.reduce((s, x) => s + (parseInt(x.received) || 0), 0);
+
+      document.getElementById('social-stats').innerHTML = `
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div class="stat-val">${data.length}</div><div class="stat-label">Total Clients</div></div>
+    <div class="stat-card"><span class="stat-icon"></span><div class="stat-val">${data.filter(s => s.status === 'active').length}</div><div class="stat-label">Active</div></div>
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><div class="stat-val stat-val-sm">${fmtMMK(monthly)}</div><div class="stat-label">Monthly Revenue (MMK)</div></div>
+    <div class="stat-card"><span class="stat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><div class="stat-val stat-val-sm">${fmtMMK(totalRec)}</div><div class="stat-label">Total ရငွေ (MMK)</div></div>`;
+
+      const tb = document.getElementById('social-list');
+      if (!data.length) {
+        tb.innerHTML = `<tr class="empty-row"><td colspan="11"><span class="empty-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Social Media client မရှိသေး</td></tr>`;
+        return;
+      }
+      tb.innerHTML = data.map(s => `<tr data-row>
+    <td><div class="cell-name">${s.customer}</div><div class="cell-sub">${s.phone || ''}</div></td>
+    <td>${s.package || '—'}</td>
+    <td>${s.platform || '—'}</td>
+    <td>${s.posts || '—'} posts</td>
+    <td>${s.duration || '—'} လ</td>
+    <td class="money">${fmtDate(s.startDate)}</td>
+    <td class="money">${fmtMMK(s.price)}/လ</td>
+    <td class="money profit-positive">${fmtMMK(s.received)}</td>
+    <td>${badge(s.payment || 'none')}</td>
+    <td>${badge(s.status || 'active')}</td>
+    <td><button class="btn-ic" onclick="editItem('social','${s.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>${currentUser.role === 'admin' ? `<button class="btn-ic del" onclick="delItem('social','${s.id}','${s.customer}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>` : ''}</td>
+  </tr>`).join('');
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       REVENUE
+    ═══════════════════════════════════════════════════════ */
+    async function renderRevenue() {
+      const [boosts, logos, webs, socials] = await Promise.all([
+        dbGet('boost'), dbGet('logo'), dbGet('web'), dbGet('social')
+      ]);
+      const bProfit = boosts.reduce((s, b) => s + (parseInt(b.profit) || 0), 0);
+      const bCost = boosts.reduce((s, b) => s + (parseInt(b.cost) || 0), 0);
+      const bCustMMK = boosts.reduce((s, b) => s + (parseInt(b.custMMK) || 0), 0);
+
+      const lPrice = logos.reduce((s, l) => s + (parseInt(l.price) || 0), 0);
+      const lRec = logos.reduce((s, l) => s + (parseInt(l.received) || 0), 0);
+      const lPend = lPrice - lRec;
+
+      const wPrice = webs.reduce((s, w) => s + (parseInt(w.price) || 0), 0);
+      const wRec = webs.reduce((s, w) => s + (parseInt(w.received) || 0), 0);
+      const wPend = wPrice - wRec;
+
+      const sMonthly = socials.filter(s => s.status === 'active').reduce((s, x) => s + (parseInt(x.price) || 0), 0);
+      const sRec = socials.reduce((s, x) => s + (parseInt(x.received) || 0), 0);
+
+      const totalNet = bProfit + lRec + wRec + sRec;
+      const totalPending = lPend + wPend;
+
+      document.getElementById('rev-total').innerHTML = `
+    <div class="rev-total-icon"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(20,40,0,0.45)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+    <div>
+      <div class="rev-total-label">စုစုပေါင်း Net Revenue · Total Earned</div>
+      <div class="rev-total-val">${fmtMMK(totalNet)} MMK</div>
+      <div class="rev-total-sub">ကျန်ငွေ (pending) · ${fmtMMK(totalPending)} MMK</div>
+    </div>`;
+
+      document.getElementById('rev-grid').innerHTML = `
+    <div class="rev-card">
+      <div class="rev-card-header">
+        <span class="rev-card-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+        <span class="rev-card-title">FB Boosting</span>
+        <span class="rev-card-count">${boosts.length} clients</span>
+      </div>
+      <div class="rev-row"><span class="rev-row-label">Active Boostings</span><span class="rev-row-val">${boosts.filter(b => b.status === 'active').length}</span></div>
+      <div class="rev-row"><span class="rev-row-label">Total $ Amount</span><span class="rev-row-val">$${fmtN(boosts.reduce((s, b) => s + (parseFloat(b.amount) || 0), 0), 2)}</span></div>
+      <div class="rev-row"><span class="rev-row-label">Customer ပေးငွေ</span><span class="rev-row-val">${fmtMMK(bCustMMK)} MMK</span></div>
+      <div class="rev-row"><span class="rev-row-label">Cost (ကိုယ်ပေး)</span><span class="rev-row-val red">${fmtMMK(bCost)} MMK</span></div>
+      <div class="rev-row"><span class="rev-row-label">Net Profit</span><span class="rev-row-val green">${fmtMMK(bProfit)} MMK</span></div>
+    </div>
+    <div class="rev-card">
+      <div class="rev-card-header">
+        <span class="rev-card-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1 1 2.48 1.02 3.5 1.02 2.2 0 3.99-1.8 4-4 .01-1.16-.94-2.06-2.5-2.06z"/></svg></span>
+        <span class="rev-card-title">Logo Design</span>
+        <span class="rev-card-count">${logos.length} clients</span>
+      </div>
+      <div class="rev-row"><span class="rev-row-label">Total Price</span><span class="rev-row-val">${fmtMMK(lPrice)} MMK</span></div>
+      <div class="rev-row"><span class="rev-row-label">ရငွေ</span><span class="rev-row-val green">${fmtMMK(lRec)} MMK</span></div>
+      <div class="rev-row"><span class="rev-row-label">ကျန်ငွေ</span><span class="rev-row-val red">${fmtMMK(lPend)} MMK</span></div>
+      <div class="rev-row"><span class="rev-row-label">ပြီးပြီ</span><span class="rev-row-val">${logos.filter(l => l.status === 'completed').length}</span></div>
+    </div>
+    <div class="rev-card">
+      <div class="rev-card-header">
+        <span class="rev-card-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+        <span class="rev-card-title">Website Design</span>
+        <span class="rev-card-count">${webs.length} projects</span>
+      </div>
+      <div class="rev-row"><span class="rev-row-label">Total Price</span><span class="rev-row-val">${fmtMMK(wPrice)} MMK</span></div>
+      <div class="rev-row"><span class="rev-row-label">ရငွေ</span><span class="rev-row-val green">${fmtMMK(wRec)} MMK</span></div>
+      <div class="rev-row"><span class="rev-row-label">ကျန်ငွေ</span><span class="rev-row-val red">${fmtMMK(wPend)} MMK</span></div>
+      <div class="rev-row"><span class="rev-row-label">ပြီးပြီ</span><span class="rev-row-val">${webs.filter(w => w.status === 'completed').length}</span></div>
+    </div>
+    <div class="rev-card">
+      <div class="rev-card-header">
+        <span class="rev-card-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <span class="rev-card-title">Social Media</span>
+        <span class="rev-card-count">${socials.length} clients</span>
+      </div>
+      <div class="rev-row"><span class="rev-row-label">Active Clients</span><span class="rev-row-val">${socials.filter(s => s.status === 'active').length}</span></div>
+      <div class="rev-row"><span class="rev-row-label">Monthly Revenue</span><span class="rev-row-val">${fmtMMK(sMonthly)} MMK</span></div>
+      <div class="rev-row"><span class="rev-row-label">Total ရငွေ</span><span class="rev-row-val green">${fmtMMK(sRec)} MMK</span></div>
+    </div>`;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       ADMIN
+    ═══════════════════════════════════════════════════════ */
+    async function renderAdmin() {
+      const users = await dbGet('users');
+      const ul = document.getElementById('user-list');
+      ul.innerHTML = users.map(u => `
+    <div class="user-item">
+      <div class="user-avatar">${u.name.charAt(0).toUpperCase()}</div>
+      <div class="user-info">
+        <div class="user-name">${u.name}</div>
+        <div class="user-meta">@${u.username} · ${u.role === 'admin' ? 'Admin' : 'Viewer'}</div>
+      </div>
+      <div class="user-actions">
+        ${u.username !== 'admin' ? `<button class="btn-ic del" onclick="deleteUser('${u.id}','${u.name}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>` : ''}
+      </div>
+    </div>`).join('');
+    }
+
+    async function createUser() {
+      const username = document.getElementById('nu-user').value.trim();
+      const name = document.getElementById('nu-name').value.trim();
+      const pass = document.getElementById('nu-pass').value;
+      const role = document.getElementById('nu-role').value;
+      if (!username || !name || !pass) { toast('အချက်အလက်ဖြည့်ပါ', 'error'); return; }
+      if (pass.length < 6) { toast('Password အနည်းဆုံး ၆ လုံးထည့်ပါ', 'error'); return; }
+      const users = await dbGet('users');
+      if (users.find(u => u.username === username)) { toast('Username ရှိပြီးသား', 'error'); return; }
+      const salt = generateSalt();
+      const hash = await hashPassword(pass, salt);
+      await dbPut('users', { id: uid(), username, name, salt, hash, role });
+      document.getElementById('nu-user').value = '';
+      document.getElementById('nu-name').value = '';
+      document.getElementById('nu-pass').value = '';
+      const strEl = document.getElementById('nuPassStr');
+      if (strEl) { strEl.textContent = ''; strEl.className = 'pass-strength'; }
+      toast('User ဖန်တီးပြီး ');
+      renderAdmin();
+    }
+
+    async function deleteUser(id, name) {
+      showConfirm(`"${name}" ကို ဖျက်မည်`, async () => {
+        await dbDelete('users', id);
+        toast('User ဖျက်ပြီး');
+        renderAdmin();
+      });
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       MODALS — FORMS
+    ═══════════════════════════════════════════════════════ */
+    let _editType = null, _editId = null;
+
+    async function openModal(type, id = null) {
+      _editType = type; _editId = id;
+      let data = null;
+      if (id) {
+        const arr = await dbGet(type);
+        data = arr.find(x => x.id === id);
+      }
+      let html = '';
+      if (type === 'boost') html = formBoost(data);
+      else if (type === 'logo') html = formLogo(data);
+      else if (type === 'web') html = formWeb(data);
+      else if (type === 'social') html = formSocial(data);
+      document.getElementById('modalBody').innerHTML = html;
+      document.getElementById('modalOverlay').classList.add('open');
+      if (type === 'boost' && data) {
+        // trigger calc on load
+        calcBoostProfit();
+      }
+    }
+    function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+    function closeModalBg(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+
+    async function editItem(type, id) { await openModal(type, id); }
+
+    function delItem(type, id, name) {
+      showConfirm(`"${name}" record ကို ဖျက်မည်`, async () => {
+        await dbDelete(type, id);
+        toast('ဖျက်ပြီး ');
+        await updateBadges();
+        const pageMap = { boost: 'boosting', logo: 'logo', web: 'website', social: 'social' };
+        renderPage(pageMap[type]);
+        renderDashboard();
+        renderRevenue();
+      });
+    }
+
+    /* ─── BOOST FORM ─── */
+    function formBoost(d) {
+      return `
+  <div class="modal-title">${d ? 'Boosting ပြင်ဆင်' : 'Boosting Client အသစ်'}</div>
+  <div class="modal-sub">${d ? d.customer + ' — record update' : 'FB Boosting အသစ် ထည့်သွင်းမည်'}</div>
+  <div class="f-row">
+    <div class="f-group"><label class="f-label">Customer အမည် *</label><input class="f-input" id="f_customer" value="${d?.customer || ''}" placeholder="ဦးဘသူ"></div>
+    <div class="f-group"><label class="f-label">ဖုန်းနံပါတ်</label><input class="f-input" id="f_phone" value="${d?.phone || ''}" placeholder="09xxxxxxxxx"></div>
+    <div class="f-group span2"><label class="f-label">Post / Page / Link</label><input class="f-input" id="f_post" value="${d?.post || ''}" placeholder="FB Page Name or Post URL"></div>
+    <div class="f-group"><label class="f-label">$ Amount (USD) *</label><input class="f-input" type="number" step="0.01" id="f_amount" value="${d?.amount || ''}" placeholder="10.00"></div>
+    <div class="f-group"><label class="f-label">ကြာချိန် (ရက်) *</label><input class="f-input" type="number" id="f_days" value="${d?.days || ''}" placeholder="10" oninput="autoEndDate()"></div>
+    <div class="f-group"><label class="f-label">စတင်ရက် *</label><input class="f-input" type="date" id="f_startDate" value="${d?.startDate || today()}" oninput="autoEndDate()"></div>
+    <div class="f-group"><label class="f-label">ကုန်ဆုံးမည့်ရက် (Auto)</label><input class="f-input f-readonly" type="date" id="f_endDate" value="${d?.endDate || ''}" readonly></div>
+    <div class="f-divider"></div>
+    <div class="f-group"><label class="f-label">Customer ပေးငွေ MMK *</label><input class="f-input" type="number" id="f_custMMK" value="${d?.custMMK || ''}" placeholder="50000" oninput="calcBoostProfit()"></div>
+    <div class="f-group"><label class="f-label">ကိုယ်ပေးငွေ (Cost) MMK *</label><input class="f-input" type="number" id="f_cost" value="${d?.cost || ''}" placeholder="30000" oninput="calcBoostProfit()"></div>
+    <div class="f-group"><label class="f-label">အမြတ် MMK (Auto)</label><input class="f-input f-readonly" id="f_profit" value="${d?.profit || ''}" placeholder="auto" readonly><div class="f-hint">= Customer MMK − Cost MMK</div></div>
+    <div class="f-group"><label class="f-label">Status</label>
+      <select class="f-select" id="f_status">
+        <option value="active" ${(d?.status || 'active') === 'active' ? 'selected' : ''}>Active</option>
+        <option value="completed" ${d?.status === 'completed' ? 'selected' : ''}> ပြီးပြီ</option>
+        <option value="cancelled" ${d?.status === 'cancelled' ? 'selected' : ''}>ဖျက်သိမ်း</option>
+      </select>
+    </div>
+    <div class="f-group span2"><label class="f-label">မှတ်ချက်</label><textarea class="f-textarea" id="f_note">${d?.note || ''}</textarea></div>
+  </div>
+  <div class="modal-actions">
+    <button class="btn-cancel" onclick="closeModal()">မလုပ်တော့</button>
+    <button class="btn-save" onclick="saveBoost()">သိမ်းမည်</button>
+  </div>`;
+    }
+    function autoEndDate() {
+      const s = document.getElementById('f_startDate')?.value;
+      const days = document.getElementById('f_days')?.value;
+      if (s && days) {
+        document.getElementById('f_endDate').value = addDays(s, days);
+      }
+    }
+    function calcBoostProfit() {
+      const cust = parseInt(document.getElementById('f_custMMK')?.value) || 0;
+      const cost = parseInt(document.getElementById('f_cost')?.value) || 0;
+      const p = document.getElementById('f_profit');
+      if (p) p.value = cust > 0 || cost > 0 ? cust - cost : '';
+    }
+    async function saveBoost() {
+      const customer = v('f_customer');
+      if (!customer) { toast('Customer အမည် ဖြည့်ပါ', 'error'); return; }
+      const custMMK = parseInt(v('f_custMMK')) || 0;
+      const cost = parseInt(v('f_cost')) || 0;
+      const obj = {
+        id: _editId || uid(), customer, phone: v('f_phone'), post: v('f_post'),
+        amount: v('f_amount'), days: v('f_days'), startDate: v('f_startDate'),
+        endDate: v('f_endDate'), custMMK, cost, profit: custMMK - cost,
+        status: v('f_status'), note: v('f_note')
+      };
+      await dbPut('boost', obj);
+      closeModal(); toast(_editId ? 'Boosting ပြင်ပြီး ' : 'Boosting ထည့်ပြီး ');
+      await updateBadges(); renderPage('boosting'); renderDashboard(); renderRevenue();
+    }
+
+    /* ─── LOGO FORM ─── */
+    function formLogo(d) {
+      const rec = parseInt(d?.received) || 0, price = parseInt(d?.price) || 0;
+      return `
+  <div class="modal-title">${d ? 'Logo Project ပြင်ဆင်' : 'Logo Project အသစ်'}</div>
+  <div class="modal-sub">${d ? d.customer + ' — update' : 'Logo Design project အသစ် ထည့်သွင်းမည်'}</div>
+  <div class="f-row">
+    <div class="f-group"><label class="f-label">Customer အမည် *</label><input class="f-input" id="f_customer" value="${d?.customer || ''}" placeholder="ဦးဘသူ"></div>
+    <div class="f-group"><label class="f-label">ဖုန်းနံပါတ်</label><input class="f-input" id="f_phone" value="${d?.phone || ''}" placeholder="09xxxxxxxxx"></div>
+    <div class="f-group"><label class="f-label">Package</label><input class="f-input" id="f_package" value="${d?.package || ''}" placeholder="Basic / Standard / Premium"></div>
+    <div class="f-group"><label class="f-label">Revision အကြိမ်</label><input class="f-input" type="number" id="f_revision" value="${d?.revision || '2'}" placeholder="2"></div>
+    <div class="f-group"><label class="f-label">Price MMK *</label><input class="f-input" type="number" id="f_price" value="${d?.price || ''}" placeholder="80000" oninput="calcLogoBal()"></div>
+    <div class="f-group"><label class="f-label">ရငွေ MMK</label><input class="f-input" type="number" id="f_received" value="${d?.received || ''}" placeholder="40000" oninput="calcLogoBal()"></div>
+    <div class="f-group"><label class="f-label">ကျန်ငွေ MMK (Auto)</label><input class="f-input f-readonly" id="f_balance" value="${price - rec}" readonly></div>
+    <div class="f-group"><label class="f-label">Payment Status</label>
+      <select class="f-select" id="f_payment">
+        <option value="none" ${(d?.payment || 'none') === 'none' ? 'selected' : ''}>မရသေး</option>
+        <option value="half" ${d?.payment === 'half' ? 'selected' : ''}>တစ်ဝက်ရပြီ</option>
+        <option value="full" ${d?.payment === 'full' ? 'selected' : ''}>အပြည့်ရပြီ</option>
+      </select>
+    </div>
+    <div class="f-group"><label class="f-label">စတင်ရက်</label><input class="f-input" type="date" id="f_startDate" value="${d?.startDate || today()}"></div>
+    <div class="f-group"><label class="f-label">Deadline</label><input class="f-input" type="date" id="f_deadline" value="${d?.deadline || ''}"></div>
+    <div class="f-group"><label class="f-label">Status</label>
+      <select class="f-select" id="f_status">
+        <option value="pending" ${(d?.status || 'pending') === 'pending' ? 'selected' : ''}>Pending</option>
+        <option value="in-progress" ${d?.status === 'in-progress' ? 'selected' : ''}>လုပ်နေ</option>
+        <option value="completed" ${d?.status === 'completed' ? 'selected' : ''}>ပြီးပြီ</option>
+      </select>
+    </div>
+    <div class="f-group span2"><label class="f-label">မှတ်ချက်</label><textarea class="f-textarea" id="f_note">${d?.note || ''}</textarea></div>
+  </div>
+  <div class="modal-actions">
+    <button class="btn-cancel" onclick="closeModal()">မလုပ်တော့</button>
+    <button class="btn-save" onclick="saveLogo()">သိမ်းမည်</button>
+  </div>`;
+    }
+    function calcLogoBal() {
+      const p = parseInt(document.getElementById('f_price')?.value) || 0;
+      const r = parseInt(document.getElementById('f_received')?.value) || 0;
+      const b = document.getElementById('f_balance'); if (b) b.value = p - r;
+    }
+    async function saveLogo() {
+      const customer = v('f_customer');
+      if (!customer) { toast('Customer အမည် ဖြည့်ပါ', 'error'); return; }
+      const price = parseInt(v('f_price')) || 0, received = parseInt(v('f_received')) || 0;
+      const obj = { id: _editId || uid(), customer, phone: v('f_phone'), package: v('f_package'), revision: v('f_revision'), price, received, balance: price - received, startDate: v('f_startDate'), deadline: v('f_deadline'), payment: v('f_payment'), status: v('f_status'), note: v('f_note') };
+      await dbPut('logo', obj);
+      closeModal(); toast(_editId ? 'Logo ပြင်ပြီး ' : 'Logo ထည့်ပြီး ');
+      await updateBadges(); renderPage('logo'); renderDashboard(); renderRevenue();
+    }
+
+    /* ─── WEB FORM ─── */
+    function formWeb(d) {
+      const rec = parseInt(d?.received) || 0, price = parseInt(d?.price) || 0;
+      return `
+  <div class="modal-title">${d ? 'Website ပြင်ဆင်' : 'Website Project အသစ်'}</div>
+  <div class="modal-sub">${d ? d.customer + ' — update' : 'Website Design project အသစ် ထည့်သွင်းမည်'}</div>
+  <div class="f-row">
+    <div class="f-group"><label class="f-label">Customer အမည် *</label><input class="f-input" id="f_customer" value="${d?.customer || ''}" placeholder="ဦးဘသူ"></div>
+    <div class="f-group"><label class="f-label">ဖုန်းနံပါတ်</label><input class="f-input" id="f_phone" value="${d?.phone || ''}" placeholder="09xxxxxxxxx"></div>
+    <div class="f-group"><label class="f-label">Website Type</label><input class="f-input" id="f_type" value="${d?.type || ''}" placeholder="Business / E-commerce / Portfolio"></div>
+    <div class="f-group"><label class="f-label">Pages အရေအတွက်</label><input class="f-input" type="number" id="f_pages" value="${d?.pages || ''}" placeholder="5"></div>
+    <div class="f-group"><label class="f-label">Technology</label><input class="f-input" id="f_tech" value="${d?.tech || ''}" placeholder="WordPress / React / Next.js"></div>
+    <div class="f-group"><label class="f-label">Hosting Platform</label><input class="f-input" id="f_hosting" value="${d?.hosting || ''}" placeholder="Vercel / cPanel / Hostinger"></div>
+    <div class="f-group"><label class="f-label">Price MMK *</label><input class="f-input" type="number" id="f_price" value="${d?.price || ''}" placeholder="500000" oninput="calcWebBal()"></div>
+    <div class="f-group"><label class="f-label">ရငွေ MMK</label><input class="f-input" type="number" id="f_received" value="${d?.received || ''}" placeholder="250000" oninput="calcWebBal()"></div>
+    <div class="f-group"><label class="f-label">ကျန်ငွေ MMK (Auto)</label><input class="f-input f-readonly" id="f_balance" value="${price - rec}" readonly></div>
+    <div class="f-group"><label class="f-label">Payment Status</label>
+      <select class="f-select" id="f_payment">
+        <option value="none" ${(d?.payment || 'none') === 'none' ? 'selected' : ''}>မရသေး</option>
+        <option value="half" ${d?.payment === 'half' ? 'selected' : ''}>တစ်ဝက်ရပြီ</option>
+        <option value="full" ${d?.payment === 'full' ? 'selected' : ''}>အပြည့်ရပြီ</option>
+      </select>
+    </div>
+    <div class="f-group"><label class="f-label">စတင်ရက်</label><input class="f-input" type="date" id="f_startDate" value="${d?.startDate || today()}"></div>
+    <div class="f-group"><label class="f-label">Deadline</label><input class="f-input" type="date" id="f_deadline" value="${d?.deadline || ''}"></div>
+    <div class="f-group"><label class="f-label">Status</label>
+      <select class="f-select" id="f_status">
+        <option value="pending" ${(d?.status || 'pending') === 'pending' ? 'selected' : ''}>Pending</option>
+        <option value="in-progress" ${d?.status === 'in-progress' ? 'selected' : ''}>လုပ်နေ</option>
+        <option value="completed" ${d?.status === 'completed' ? 'selected' : ''}>ပြီးပြီ</option>
+      </select>
+    </div>
+    <div class="f-group span2"><label class="f-label">မှတ်ချက်</label><textarea class="f-textarea" id="f_note">${d?.note || ''}</textarea></div>
+  </div>
+  <div class="modal-actions">
+    <button class="btn-cancel" onclick="closeModal()">မလုပ်တော့</button>
+    <button class="btn-save" onclick="saveWeb()">သိမ်းမည်</button>
+  </div>`;
+    }
+    function calcWebBal() {
+      const p = parseInt(document.getElementById('f_price')?.value) || 0;
+      const r = parseInt(document.getElementById('f_received')?.value) || 0;
+      const b = document.getElementById('f_balance'); if (b) b.value = p - r;
+    }
+    async function saveWeb() {
+      const customer = v('f_customer');
+      if (!customer) { toast('Customer အမည် ဖြည့်ပါ', 'error'); return; }
+      const price = parseInt(v('f_price')) || 0, received = parseInt(v('f_received')) || 0;
+      const obj = { id: _editId || uid(), customer, phone: v('f_phone'), type: v('f_type'), pages: v('f_pages'), tech: v('f_tech'), hosting: v('f_hosting'), price, received, balance: price - received, startDate: v('f_startDate'), deadline: v('f_deadline'), payment: v('f_payment'), status: v('f_status'), note: v('f_note') };
+      await dbPut('web', obj);
+      closeModal(); toast(_editId ? 'Website ပြင်ပြီး ' : 'Website ထည့်ပြီး ');
+      await updateBadges(); renderPage('website'); renderDashboard(); renderRevenue();
+    }
+
+    /* ─── SOCIAL FORM ─── */
+    function formSocial(d) {
+      return `
+  <div class="modal-title">${d ? 'Social Media ပြင်ဆင်' : 'Social Media Client အသစ်'}</div>
+  <div class="modal-sub">${d ? d.customer + ' — update' : 'Social Media Management client အသစ် ထည့်သွင်းမည်'}</div>
+  <div class="f-row">
+    <div class="f-group"><label class="f-label">Customer အမည် *</label><input class="f-input" id="f_customer" value="${d?.customer || ''}" placeholder="ဦးဘသူ"></div>
+    <div class="f-group"><label class="f-label">ဖုန်းနံပါတ်</label><input class="f-input" id="f_phone" value="${d?.phone || ''}" placeholder="09xxxxxxxxx"></div>
+    <div class="f-group"><label class="f-label">Package</label><input class="f-input" id="f_package" value="${d?.package || ''}" placeholder="Starter / Growth / Pro"></div>
+    <div class="f-group"><label class="f-label">Platforms</label><input class="f-input" id="f_platform" value="${d?.platform || ''}" placeholder="Facebook, Instagram, TikTok"></div>
+    <div class="f-group"><label class="f-label">Posts / Month</label><input class="f-input" type="number" id="f_posts" value="${d?.posts || ''}" placeholder="20"></div>
+    <div class="f-group"><label class="f-label">Stories / Month</label><input class="f-input" type="number" id="f_stories" value="${d?.stories || ''}" placeholder="10"></div>
+    <div class="f-group"><label class="f-label">Price / Month (MMK) *</label><input class="f-input" type="number" id="f_price" value="${d?.price || ''}" placeholder="150000"></div>
+    <div class="f-group"><label class="f-label">သက်တမ်း (လ)</label><input class="f-input" type="number" id="f_duration" value="${d?.duration || ''}" placeholder="3"></div>
+    <div class="f-group"><label class="f-label">ရငွေ MMK</label><input class="f-input" type="number" id="f_received" value="${d?.received || ''}" placeholder="150000"></div>
+    <div class="f-group"><label class="f-label">Payment Status</label>
+      <select class="f-select" id="f_payment">
+        <option value="none" ${(d?.payment || 'none') === 'none' ? 'selected' : ''}>မရသေး</option>
+        <option value="half" ${d?.payment === 'half' ? 'selected' : ''}>တစ်ဝက်ရပြီ</option>
+        <option value="full" ${d?.payment === 'full' ? 'selected' : ''}>အပြည့်ရပြီ</option>
+      </select>
+    </div>
+    <div class="f-group"><label class="f-label">စတင်ရက်</label><input class="f-input" type="date" id="f_startDate" value="${d?.startDate || today()}"></div>
+    <div class="f-group"><label class="f-label">Status</label>
+      <select class="f-select" id="f_status">
+        <option value="active" ${(d?.status || 'active') === 'active' ? 'selected' : ''}> Active</option>
+        <option value="completed" ${d?.status === 'completed' ? 'selected' : ''}>⏸ ပြီးဆုံး</option>
+        <option value="cancelled" ${d?.status === 'cancelled' ? 'selected' : ''}>ဖျက်သိမ်း</option>
+      </select>
+    </div>
+    <div class="f-group span2"><label class="f-label">မှတ်ချက်</label><textarea class="f-textarea" id="f_note">${d?.note || ''}</textarea></div>
+  </div>
+  <div class="modal-actions">
+    <button class="btn-cancel" onclick="closeModal()">မလုပ်တော့</button>
+    <button class="btn-save" onclick="saveSocial()">သိမ်းမည်</button>
+  </div>`;
+    }
+    async function saveSocial() {
+      const customer = v('f_customer');
+      if (!customer) { toast('Customer အမည် ဖြည့်ပါ', 'error'); return; }
+      const obj = { id: _editId || uid(), customer, phone: v('f_phone'), package: v('f_package'), platform: v('f_platform'), posts: v('f_posts'), stories: v('f_stories'), price: parseInt(v('f_price')) || 0, duration: v('f_duration'), received: parseInt(v('f_received')) || 0, startDate: v('f_startDate'), payment: v('f_payment'), status: v('f_status'), note: v('f_note') };
+      await dbPut('social', obj);
+      closeModal(); toast(_editId ? 'Social Media ပြင်ပြီး ' : 'Social Media ထည့်ပြီး ');
+      await updateBadges(); renderPage('social'); renderDashboard(); renderRevenue();
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       SEARCH FILTER
+    ═══════════════════════════════════════════════════════ */
+    function filterTable(tbodyId, q) {
+      const rows = document.querySelectorAll(`#${tbodyId} tr[data-row]`);
+      const lq = q.toLowerCase();
+      rows.forEach(r => {
+        r.style.display = r.textContent.toLowerCase().includes(lq) ? '' : 'none';
+      });
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       BOOT
+    ═══════════════════════════════════════════════════════ */
+    (async () => {
+      await initDB();
+      await initUsers();
+      if (await checkSession()) {
+        document.getElementById('loginScreen').style.display = 'none';
+        startApp();
+      }
+    })();
+  </script>
+</body>
+
+</html>
