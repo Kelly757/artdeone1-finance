@@ -2428,6 +2428,7 @@
       if (type === 'boost') html = formBoost(data); else if (type === 'logo') html = formLogo(data); else if (type === 'web') html = formWeb(data); else if (type === 'social') html = formSocial(data);
       document.getElementById('modalBody').innerHTML = html; document.getElementById('modalOverlay').classList.add('open');
       if (type === 'boost' && data) calcBoostProfit();
+      if ((type === 'logo' || type === 'web') && data) calcBal();
     }
     function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
     function closeModalBg(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
