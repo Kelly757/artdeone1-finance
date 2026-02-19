@@ -2340,9 +2340,9 @@
       if (!active.length) bTb.innerHTML = '<tr class="empty-row"><td colspan="6">Active Boosting မရှိပါ</td></tr>';
       else bTb.innerHTML = active.map(b => '<tr><td><div class="cell-name" onclick="showCustomerHistory(\'' + esc(b.customer) + '\')">' + esc(b.customer) + '</div><div class="cell-sub">' + (b.phone || '') + '</div></td><td>' + esc(b.post || '—') + '</td><td class="money">' + fmtDate(b.end_date) + '</td><td>' + daysLeftEl(b.end_date) + '</td><td class="money">$' + fmtN(b.amount, 2) + '</td><td class="money profit-positive">' + fmtMMK(b.profit) + ' MMK</td></tr>').join('');
       const pending = [];
-      logos.forEach(l => { const rem = (parseInt(l.price) || 0) - (parseInt(l.received) || 0); if (rem > 0) pending.push({ name: l.customer, service: 'Logo Design', total: l.price, received: l.received, remain: rem }); });
-      webs.forEach(w => { const rem = (parseInt(w.price) || 0) - (parseInt(w.received) || 0); if (rem > 0) pending.push({ name: w.customer, service: 'Website', total: w.price, received: w.received, remain: rem }); });
-      socials.forEach(s => { const rem = (parseInt(s.price) || 0) - (parseInt(s.received) || 0); if (rem > 0) pending.push({ name: s.customer, service: 'Social Media', total: s.price, received: s.received, remain: rem }); });
+      logos.forEach(l => { const rem = (parseInt(l.price) || 0) - (parseInt(l.received) || 0); if (rem > 0 && l.payment !== 'full') pending.push({ name: l.customer, service: 'Logo Design', total: l.price, received: l.received, remain: rem }); });
+      webs.forEach(w => { const rem = (parseInt(w.price) || 0) - (parseInt(w.received) || 0); if (rem > 0 && w.payment !== 'full') pending.push({ name: w.customer, service: 'Website', total: w.price, received: w.received, remain: rem }); });
+      socials.forEach(s => { const rem = (parseInt(s.price) || 0) - (parseInt(s.received) || 0); if (rem > 0 && s.payment !== 'full') pending.push({ name: s.customer, service: 'Social Media', total: s.price, received: s.received, remain: rem }); });
       const pTb = document.getElementById('dash-pending-list');
       if (!pending.length) pTb.innerHTML = '<tr class="empty-row"><td colspan="5">ကျန်ငွေ မရှိပါ — အားလုံးရပြီး! 🎉</td></tr>';
       else pTb.innerHTML = pending.map(p => '<tr><td><div class="cell-name" onclick="showCustomerHistory(\'' + esc(p.name) + '\')">' + esc(p.name) + '</div></td><td><span class="badge badge-blue">' + p.service + '</span></td><td class="money">' + fmtMMK(p.total) + '</td><td class="money profit-positive">' + fmtMMK(p.received) + '</td><td class="money profit-negative">' + fmtMMK(p.remain) + '</td></tr>').join('');
@@ -2428,7 +2428,6 @@
       if (type === 'boost') html = formBoost(data); else if (type === 'logo') html = formLogo(data); else if (type === 'web') html = formWeb(data); else if (type === 'social') html = formSocial(data);
       document.getElementById('modalBody').innerHTML = html; document.getElementById('modalOverlay').classList.add('open');
       if (type === 'boost' && data) calcBoostProfit();
-      if ((type === 'logo' || type === 'web') && data) calcBal();
     }
     function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
     function closeModalBg(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
