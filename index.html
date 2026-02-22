@@ -1611,6 +1611,67 @@
       padding: 4px
     }
 
+    /* ═══ NEW: Personal Business Multi-currency Styles ═══ */
+    .currency-cell {
+      font-family: 'DM Mono', monospace;
+      font-size: 11.5px;
+      line-height: 1.7
+    }
+
+    .currency-cell .cur-line {
+      display: flex;
+      gap: 4px;
+      align-items: center
+    }
+
+    .currency-cell .cur-label {
+      color: var(--text4);
+      font-size: 9.5px;
+      font-weight: 700;
+      min-width: 28px
+    }
+
+    .currency-cell .cur-val {
+      font-weight: 600;
+      color: var(--text)
+    }
+
+    .currency-cell .cur-val.dim {
+      color: var(--text4);
+      font-weight: 400
+    }
+
+    .section-divider-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      margin: 32px 0 16px;
+      padding-top: 20px;
+      border-top: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .stats-grid-6 {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+      margin-bottom: 24px
+    }
+
+    .f-section-label {
+      grid-column: 1/-1;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      padding: 6px 0 0;
+      border-top: 1px solid var(--border);
+      margin-top: 4px
+    }
+
     @media(max-width:1100px) {
       .stats-grid {
         grid-template-columns: repeat(2, 1fr)
@@ -1626,6 +1687,10 @@
 
       .admin-grid {
         grid-template-columns: 1fr
+      }
+
+      .stats-grid-6 {
+        grid-template-columns: repeat(3, 1fr)
       }
     }
 
@@ -1727,6 +1792,10 @@
         padding: 10px 10px;
         font-size: 12px
       }
+
+      .stats-grid-6 {
+        grid-template-columns: repeat(2, 1fr)
+      }
     }
 
     @media(max-width:400px) {
@@ -1738,9 +1807,14 @@
         padding: 12px 10px;
         padding-top: 56px
       }
+
+      .stats-grid-6 {
+        grid-template-columns: 1fr
+      }
     }
   </style>
 </head>
+
 
 <body>
   <div id="loginScreen">
@@ -1886,6 +1960,8 @@
     </aside>
 
     <main class="main-content">
+
+      <!-- ═══ DASHBOARD ═══ -->
       <div class="page active" id="p-dashboard">
         <div class="page-header">
           <div>
@@ -1932,6 +2008,7 @@
         </div>
       </div>
 
+      <!-- ═══ NOTIFICATIONS ═══ -->
       <div class="page" id="p-notifications">
         <div class="page-header">
           <div>
@@ -1946,6 +2023,7 @@
         </div>
       </div>
 
+      <!-- ═══ FB BOOSTING ═══ -->
       <div class="page" id="p-boosting">
         <div class="page-header">
           <div>
@@ -1993,6 +2071,7 @@
         </div>
       </div>
 
+      <!-- ═══ LOGO DESIGN ═══ -->
       <div class="page" id="p-logo">
         <div class="page-header">
           <div>
@@ -2039,6 +2118,7 @@
         </div>
       </div>
 
+      <!-- ═══ WEBSITE DESIGN ═══ -->
       <div class="page" id="p-website">
         <div class="page-header">
           <div>
@@ -2086,6 +2166,7 @@
         </div>
       </div>
 
+      <!-- ═══ SOCIAL MEDIA ═══ -->
       <div class="page" id="p-social">
         <div class="page-header">
           <div>
@@ -2132,6 +2213,7 @@
         </div>
       </div>
 
+      <!-- ═══ REVENUE ═══ -->
       <div class="page" id="p-revenue">
         <div class="page-header">
           <div>
@@ -2158,28 +2240,38 @@
         <div class="rev-grid" id="rev-grid"></div>
       </div>
 
+      <!-- ═══ PERSONAL BUSINESS — UPDATED WITH MULTI-CURRENCY + AD CUSTOMERS ═══ -->
       <div class="page" id="p-personal">
         <div class="page-header">
           <div>
             <div class="page-title">Personal Business</div>
-            <div class="page-sub">ကိုယ်ပိုင်လုပ်ငန်း အသုံးစရိတ်နှင့် ဝင်ငွေမှတ်တမ်း</div>
-          </div><button class="btn-add" onclick="openModal('personal')">+ Record အသစ်ထည့်</button>
+            <div class="page-sub">ကိုယ်ပိုင်လုပ်ငန်း · Spend & Boosting ($ / ¥ / MMK) · Ad Customers</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn-add" onclick="openModal('personal')">+ Spend/Cost Record</button>
+            <button class="btn-add"
+              style="background:var(--surface);color:var(--text2);border:1.5px solid var(--border)"
+              onclick="openModal('ad_customer')">+ Ad Customer</button>
+          </div>
         </div>
-        <div class="stats-grid" id="personal-stats"></div>
+        <div class="stats-grid-6" id="personal-stats"></div>
         <div class="table-card">
-          <div class="table-head"><span class="table-head-title">Personal Records</span>
-            <div class="table-head-right"><button class="btn-export" onclick="exportExcel('personal')"><svg width="13"
-                  height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="table-head"><span class="table-head-title">💰 Spend & Boosting Cost Records</span>
+            <div class="table-head-right">
+              <button class="btn-export" onclick="exportExcel('personal')"><svg width="13" height="13"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                   <polyline points="14,2 14,8 20,8" />
                   <line x1="16" y1="13" x2="8" y2="13" />
                   <line x1="16" y1="17" x2="8" y2="17" />
-                </svg> Excel</button><button class="btn-export" onclick="exportPDF('personal')"><svg width="13"
-                  height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                </svg> Excel</button>
+              <button class="btn-export" onclick="exportPDF('personal')"><svg width="13" height="13" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                   <polyline points="14,2 14,8 20,8" />
-                </svg> PDF</button><input class="search-box" placeholder="ရှာမည်..."
-                oninput="filterTable('personal-list',this.value)"></div>
+                </svg> PDF</button>
+              <input class="search-box" placeholder="ရှာမည်..." oninput="filterTable('personal-list',this.value)">
+            </div>
           </div>
           <div class="tbl-wrap">
             <table>
@@ -2187,12 +2279,11 @@
                 <tr>
                   <th>ရက်စွဲ</th>
                   <th>Customer</th>
-                  <th>Project Name</th>
-                  <th>Spend ($)</th>
-                  <th>Spend (MMK)</th>
-                  <th>Revenue (MMK)</th>
-                  <th>Boosting Cost</th>
-                  <th>အမြတ် (Auto)</th>
+                  <th>Project</th>
+                  <th>Spend ($|¥|MMK)</th>
+                  <th>Boost Cost ($|¥|MMK)</th>
+                  <th>Revenue MMK</th>
+                  <th>အမြတ် MMK</th>
                   <th>Status</th>
                   <th></th>
                 </tr>
@@ -2201,8 +2292,45 @@
             </table>
           </div>
         </div>
+
+        <div class="section-divider-title">📢 Ad Customers — ကြော်ငြာမှ ရရှိသော Customers</div>
+        <div class="stats-grid" id="ad-customer-stats"></div>
+        <div class="table-card">
+          <div class="table-head"><span class="table-head-title">Ad-Sourced Customers & Projects</span>
+            <div class="table-head-right">
+              <button class="btn-export" onclick="exportExcel('ad_customers')"><svg width="13" height="13"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14,2 14,8 20,8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                </svg> Excel</button>
+              <input class="search-box" placeholder="ရှာမည်..." oninput="filterTable('ad-customer-list',this.value)">
+            </div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ရက်စွဲ</th>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>Project</th>
+                  <th>Ad Source</th>
+                  <th>Ad Spend ($|¥|MMK)</th>
+                  <th>Revenue MMK</th>
+                  <th>Profit MMK</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="ad-customer-list"></tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
+      <!-- ═══ ADMIN ═══ -->
       <div class="page" id="p-admin">
         <div class="page-header">
           <div>
@@ -2250,9 +2378,11 @@
           </div>
         </div>
       </div>
+
     </main>
   </div>
 
+  <!-- ═══ MODALS & OVERLAYS ═══ -->
   <div class="modal-overlay" id="modalOverlay" onclick="closeModalBg(event)">
     <div class="modal" id="modalBody"></div>
   </div>
@@ -2274,17 +2404,18 @@
     </div>
   </div>
   <div id="toastContainer"></div>
-
   <script>
     const SUPABASE_URL = 'https://uxgkmmpeozffhnxnvsxh.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV4Z2ttbXBlb3pmZmhueG52c3hoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0ODEyMzEsImV4cCI6MjA4NzA1NzIzMX0.Ms9lLXQaFmLwa16so9hbsGUTrkNsL23zl43iXvaQPh4';
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     let currentUser = null;
 
+    /* ═══ DATABASE HELPERS ═══ */
     async function dbGet(t) { const { data, error } = await sb.from(t).select('*'); if (error) { console.error('dbGet:', t, error); return []; } return data || []; }
     async function dbPut(t, o) { const { data, error } = await sb.from(t).upsert(o, { onConflict: 'id' }); if (error) { console.error('dbPut:', t, error); throw error; } return data; }
     async function dbDelete(t, id) { const { error } = await sb.from(t).delete().eq('id', id); if (error) { console.error('dbDel:', t, error); throw error; } }
 
+    /* ═══ AUTH ═══ */
     async function doLogin() {
       const email = document.getElementById('loginEmail').value.trim(), password = document.getElementById('loginPass').value;
       if (!email || !password) return;
@@ -2300,6 +2431,7 @@
     function togglePassVis(id, btn) { const inp = document.getElementById(id); const isP = inp.type === 'password'; inp.type = isP ? 'text' : 'password'; btn.innerHTML = isP ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>' : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'; }
     function showPassStrength(v, id) { const el = document.getElementById(id); if (!el) return; if (!v) { el.textContent = ''; el.className = 'pass-strength'; return; } if (v.length < 6) { el.textContent = 'အားနည်း — အနည်းဆုံး ၆ လုံး'; el.className = 'pass-strength weak'; } else if (v.length < 10) { el.textContent = 'OK — သုံးလို့ရ'; el.className = 'pass-strength ok'; } else { el.textContent = 'အားကောင်း ✓'; el.className = 'pass-strength strong'; } }
 
+    /* ═══ UTILITY FUNCTIONS ═══ */
     function uid() { return 'id_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
     function today() { return new Date().toISOString().split('T')[0]; }
     function fmtDate(d) { return d ? d.split('-').reverse().join('/') : '—'; }
@@ -2309,22 +2441,26 @@
     function fmtN(n, d = 0) { return parseFloat(n || 0).toFixed(d); }
     function val(id) { const e = document.getElementById(id); return e ? e.value : ''; }
     function esc(s) { return (s || '').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-    function daysLeftEl(s) { const n = daysLeft(s); if (n === null) return '<span class="dl dl-done">—</span>'; if (n < 0) return `<span class="dl dl-danger">ကုန်ပြီ (${Math.abs(n)}ရက်)</span>`; if (n === 0) return '<span class="dl dl-danger">ယနေ့ ကုန်</span>'; if (n <= 3) return `<span class="dl dl-danger">${n} ရက်</span>`; if (n <= 7) return `<span class="dl dl-warn">${n} ရက်</span>`; return `<span class="dl dl-ok">${n} ရက်</span>`; }
-    function badge(t) { const m = { active: ['badge-green', 'Active'], completed: ['badge-blue', 'ပြီးပြီ / Done'], 'in-progress': ['badge-yellow', 'လုပ်နေ'], pending: ['badge-gray', 'Pending'], cancelled: ['badge-red', 'ဖျက်သိမ်း'], full: ['badge-green', 'အပြည့်ရ'], half: ['badge-yellow', 'တစ်ဝက်ရ'], none: ['badge-red', 'မရသေး'] }; const [c, l] = m[t] || ['badge-gray', t]; return `<span class="badge ${c}">${l}</span>`; }
-    function toast(msg, type = 'success') { const t = document.createElement('div'); t.className = `toast ${type}`; t.textContent = msg; document.getElementById('toastContainer').appendChild(t); setTimeout(() => t.remove(), 3000); }
+    function daysLeftEl(s) { const n = daysLeft(s); if (n === null) return '<span class="dl dl-done">—</span>'; if (n < 0) return '<span class="dl dl-danger">ကုန်ပြီ (' + Math.abs(n) + 'ရက်)</span>'; if (n === 0) return '<span class="dl dl-danger">ယနေ့ ကုန်</span>'; if (n <= 3) return '<span class="dl dl-danger">' + n + ' ရက်</span>'; if (n <= 7) return '<span class="dl dl-warn">' + n + ' ရက်</span>'; return '<span class="dl dl-ok">' + n + ' ရက်</span>'; }
+    function badge(t) { const m = { active: ['badge-green', 'Active'], completed: ['badge-blue', 'ပြီးပြီ / Done'], 'in-progress': ['badge-yellow', 'လုပ်နေ'], pending: ['badge-gray', 'Pending'], cancelled: ['badge-red', 'ဖျက်သိမ်း'], full: ['badge-green', 'အပြည့်ရ'], half: ['badge-yellow', 'တစ်ဝက်ရ'], none: ['badge-red', 'မရသေး'] }; const [c, l] = m[t] || ['badge-gray', t]; return '<span class="badge ' + c + '">' + l + '</span>'; }
+    function toast(msg, type = 'success') { const t = document.createElement('div'); t.className = 'toast ' + type; t.textContent = msg; document.getElementById('toastContainer').appendChild(t); setTimeout(() => t.remove(), 3000); }
     function showConfirm(msg, cb) { document.getElementById('confirmMsg').textContent = msg; document.getElementById('confirmOverlay').classList.add('open'); document.getElementById('confirmYesBtn').onclick = () => { closeConfirm(); cb && cb(); }; }
     function closeConfirm() { document.getElementById('confirmOverlay').classList.remove('open'); }
 
+    /* ═══ MOBILE MENU ═══ */
     function toggleMobileMenu() { document.getElementById('sidebar').classList.toggle('mobile-open'); document.getElementById('mobileBackdrop').classList.toggle('open'); }
     function closeMobileMenu() { document.getElementById('sidebar').classList.remove('mobile-open'); document.getElementById('mobileBackdrop').classList.remove('open'); }
 
+    /* ═══ NAVIGATION ═══ */
     function nav(el) { document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); el.classList.add('active'); const page = el.dataset.page; document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById('p-' + page).classList.add('active'); renderPage(page); closeMobileMenu(); }
     function renderPage(id) { if (id === 'dashboard') renderDashboard(); else if (id === 'boosting') renderBoosting(); else if (id === 'logo') renderLogo(); else if (id === 'website') renderWebsite(); else if (id === 'social') renderSocial(); else if (id === 'revenue') renderRevenue(); else if (id === 'personal') renderPersonal(); else if (id === 'admin') renderAdmin(); else if (id === 'notifications') renderNotifications(); }
 
+    /* ═══ THEME ═══ */
     function toggleTheme() { const d = document.documentElement.getAttribute('data-theme') === 'dark'; const n = d ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('smpro_theme', n); updateThemeUI(n); }
     function updateThemeUI(t) { document.getElementById('themeIcon').innerHTML = t === 'dark' ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>' : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'; document.getElementById('themeLabel').textContent = t === 'dark' ? 'Light Mode' : 'Dark Mode'; }
     (function () { const t = localStorage.getItem('smpro_theme') || 'light'; document.documentElement.setAttribute('data-theme', t); })();
 
+    /* ═══ APP START ═══ */
     async function startApp() {
       document.getElementById('app').classList.add('visible');
       const p = currentUser.profile;
@@ -2348,6 +2484,7 @@
 
     function isAdmin() { return currentUser?.profile?.role === 'admin'; }
 
+    /* ═══ ALERTS ═══ */
     function buildAlerts(boosts, logos, webs, socials) {
       const alerts = [];
       boosts.filter(b => b.status === 'active').forEach(b => { const dl = daysLeft(b.end_date); if (dl !== null && dl <= 0) alerts.push({ type: 'red', title: 'Boosting ကုန်ဆုံးပြီ — ' + b.customer, sub: (b.post || '') + ' · ကုန်ဆုံးရက် ' + fmtDate(b.end_date), service: 'FB Boosting' }); else if (dl !== null && dl <= 3) alerts.push({ type: 'yellow', title: 'Boosting ' + dl + ' ရက်အတွင်း ကုန်ဆုံးမည် — ' + b.customer, sub: (b.post || '') + ' · ကုန်ဆုံးရက် ' + fmtDate(b.end_date), service: 'FB Boosting' }); });
@@ -2357,6 +2494,7 @@
       return alerts;
     }
 
+    /* ═══ NOTIFICATIONS ═══ */
     async function renderNotifications() {
       const [b, l, w, s] = await Promise.all([dbGet('boost'), dbGet('logo'), dbGet('web'), dbGet('social')]);
       const alerts = buildAlerts(b, l, w, s); const reds = alerts.filter(a => a.type === 'red').length, yellows = alerts.filter(a => a.type === 'yellow').length, blues = alerts.filter(a => a.type === 'blue').length;
@@ -2366,6 +2504,7 @@
       nl.innerHTML = alerts.map(a => '<div class="notif-item"><div class="notif-dot ' + a.type + '"></div><div><div class="notif-text">' + esc(a.title) + '</div><div class="notif-meta">' + esc(a.sub) + ' · ' + a.service + '</div></div></div>').join('');
     }
 
+    /* ═══ CUSTOMER HISTORY ═══ */
     async function showCustomerHistory(name) {
       const [boosts, logos, webs, socials] = await Promise.all([dbGet('boost'), dbGet('logo'), dbGet('web'), dbGet('social')]);
       const lName = name.toLowerCase();
@@ -2382,6 +2521,7 @@
       document.getElementById('chBody').innerHTML = html; document.getElementById('chOverlay').classList.add('open');
     }
 
+    /* ═══ DASHBOARD ═══ */
     async function renderDashboard() {
       const [boosts, logos, webs, socials] = await Promise.all([dbGet('boost'), dbGet('logo'), dbGet('web'), dbGet('social')]);
       const totalProfit = boosts.reduce((s, b) => s + (parseInt(b.profit) || 0), 0) + logos.reduce((s, l) => s + (parseInt(l.received) || 0), 0) + webs.reduce((s, w) => s + (parseInt(w.received) || 0), 0) + socials.reduce((s, x) => s + (parseInt(x.received) || 0), 0);
@@ -2399,6 +2539,7 @@
       else pTb.innerHTML = pending.map(p => '<tr><td><div class="cell-name" onclick="showCustomerHistory(\'' + esc(p.name) + '\')">' + esc(p.name) + '</div></td><td><span class="badge badge-blue">' + p.service + '</span></td><td class="money">' + fmtMMK(p.total) + '</td><td class="money profit-positive">' + fmtMMK(p.received) + '</td><td class="money profit-negative">' + fmtMMK(p.remain) + '</td></tr>').join('');
     }
 
+    /* ═══ FB BOOSTING ═══ */
     async function renderBoosting() {
       const data = await dbGet('boost'); const active = data.filter(b => b.status === 'active').length; const totalAmt = data.reduce((s, b) => s + (parseFloat(b.amount) || 0), 0); const totalProfit = data.reduce((s, b) => s + (parseInt(b.profit) || 0), 0);
       document.getElementById('boost-stats').innerHTML = '<div class="stat-card"><div class="stat-val">' + data.length + '</div><div class="stat-label">Total Clients</div></div><div class="stat-card"><div class="stat-val">' + active + '</div><div class="stat-label">Active</div></div><div class="stat-card"><div class="stat-val stat-val-sm">$' + fmtN(totalAmt, 2) + '</div><div class="stat-label">Total USD</div></div><div class="stat-card gray-accent"><div class="stat-val stat-val-sm">' + fmtMMK(totalProfit) + '</div><div class="stat-label">Net Profit (MMK)</div></div>';
@@ -2407,6 +2548,7 @@
       tb.innerHTML = data.map(b => '<tr data-row><td><div class="cell-name" onclick="showCustomerHistory(\'' + esc(b.customer) + '\')">' + esc(b.customer) + '</div><div class="cell-sub">' + (b.phone || '') + '</div></td><td>' + esc(b.post || '—') + '</td><td>' + (b.days || '—') + ' ရက်</td><td class="money">' + fmtDate(b.start_date) + '</td><td class="money">' + fmtDate(b.end_date) + '</td><td>' + daysLeftEl(b.end_date) + '</td><td class="money">$' + fmtN(b.amount, 2) + '</td><td class="money">' + fmtMMK(b.cust_mmk) + '</td><td class="money">' + fmtMMK(b.cost) + '</td><td class="money profit-positive">' + fmtMMK(b.profit) + '</td><td>' + badge(b.status) + '</td><td><button class="btn-ic" onclick="editItem(\'boost\',\'' + b.id + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>' + (isAdmin() ? '<button class="btn-ic del" onclick="delItem(\'boost\',\'' + b.id + '\',\'' + esc(b.customer) + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>' : '') + '<button class="btn-ic" title="Invoice" onclick="generateInvoice(\'boost\',\'' + b.id + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></button></td></tr>').join('');
     }
 
+    /* ═══ LOGO DESIGN ═══ */
     async function renderLogo() {
       const data = await dbGet('logo'); const totalPrice = data.reduce((s, l) => s + (parseInt(l.price) || 0), 0); const totalRec = data.reduce((s, l) => s + (parseInt(l.received) || 0), 0);
       document.getElementById('logo-stats').innerHTML = '<div class="stat-card"><div class="stat-val">' + data.length + '</div><div class="stat-label">Total Clients</div></div><div class="stat-card"><div class="stat-val">' + data.filter(l => l.status === 'in-progress').length + '</div><div class="stat-label">လုပ်ဆဲ</div></div><div class="stat-card"><div class="stat-val stat-val-sm">' + fmtMMK(totalRec) + '</div><div class="stat-label">ရငွေ (MMK)</div></div><div class="stat-card red-accent"><div class="stat-val stat-val-sm">' + fmtMMK(totalPrice - totalRec) + '</div><div class="stat-label">ကျန်ငွေ (MMK)</div></div>';
@@ -2415,6 +2557,7 @@
       tb.innerHTML = data.map(l => { const rec = parseInt(l.received) || 0, price = parseInt(l.price) || 0; return '<tr data-row><td><div class="cell-name" onclick="showCustomerHistory(\'' + esc(l.customer) + '\')">' + esc(l.customer) + '</div><div class="cell-sub">' + (l.phone || '') + '</div></td><td>' + (l.package || '—') + '</td><td class="money">' + fmtDate(l.start_date) + '</td><td>' + (l.deadline ? '<div class="money">' + fmtDate(l.deadline) + '</div>' + daysLeftEl(l.deadline) : '—') + '</td><td class="money">' + fmtMMK(price) + '</td><td class="money profit-positive">' + fmtMMK(rec) + '</td><td class="money ' + ((price - rec) > 0 ? 'profit-negative' : '') + '">' + fmtMMK(price - rec) + '</td><td>' + badge(l.payment || 'none') + '</td><td>' + (l.revision || 0) + 'x</td><td>' + badge(l.status || 'pending') + '</td><td><button class="btn-ic" onclick="editItem(\'logo\',\'' + l.id + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>' + (isAdmin() ? '<button class="btn-ic del" onclick="delItem(\'logo\',\'' + l.id + '\',\'' + esc(l.customer) + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>' : '') + '<button class="btn-ic" title="Invoice" onclick="generateInvoice(\'logo\',\'' + l.id + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></button></td></tr>'; }).join('');
     }
 
+    /* ═══ WEBSITE DESIGN ═══ */
     async function renderWebsite() {
       const data = await dbGet('web'); const totalPrice = data.reduce((s, w) => s + (parseInt(w.price) || 0), 0); const totalRec = data.reduce((s, w) => s + (parseInt(w.received) || 0), 0);
       document.getElementById('web-stats').innerHTML = '<div class="stat-card"><div class="stat-val">' + data.length + '</div><div class="stat-label">Total Projects</div></div><div class="stat-card"><div class="stat-val">' + data.filter(w => w.status === 'in-progress').length + '</div><div class="stat-label">လုပ်ဆဲ</div></div><div class="stat-card"><div class="stat-val stat-val-sm">' + fmtMMK(totalRec) + '</div><div class="stat-label">ရငွေ (MMK)</div></div><div class="stat-card red-accent"><div class="stat-val stat-val-sm">' + fmtMMK(totalPrice - totalRec) + '</div><div class="stat-label">ကျန်ငွေ (MMK)</div></div>';
@@ -2423,6 +2566,7 @@
       tb.innerHTML = data.map(w => { const rec = parseInt(w.received) || 0, price = parseInt(w.price) || 0; return '<tr data-row><td><div class="cell-name" onclick="showCustomerHistory(\'' + esc(w.customer) + '\')">' + esc(w.customer) + '</div><div class="cell-sub">' + (w.phone || '') + '</div></td><td>' + (w.type || '—') + '</td><td>' + (w.pages || '—') + ' pages</td><td>' + (w.tech || '—') + '</td><td class="money">' + fmtDate(w.start_date) + '</td><td>' + (w.deadline ? '<div class="money">' + fmtDate(w.deadline) + '</div>' + daysLeftEl(w.deadline) : '—') + '</td><td class="money">' + fmtMMK(price) + '</td><td class="money profit-positive">' + fmtMMK(rec) + '</td><td class="money ' + ((price - rec) > 0 ? 'profit-negative' : '') + '">' + fmtMMK(price - rec) + '</td><td>' + badge(w.payment || 'none') + '</td><td>' + badge(w.status || 'pending') + '</td><td><button class="btn-ic" onclick="editItem(\'web\',\'' + w.id + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>' + (isAdmin() ? '<button class="btn-ic del" onclick="delItem(\'web\',\'' + w.id + '\',\'' + esc(w.customer) + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>' : '') + '<button class="btn-ic" title="Invoice" onclick="generateInvoice(\'web\',\'' + w.id + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></button></td></tr>'; }).join('');
     }
 
+    /* ═══ SOCIAL MEDIA ═══ */
     async function renderSocial() {
       const data = await dbGet('social'); const monthly = data.filter(s => s.status === 'active').reduce((s, x) => s + (parseInt(x.price) || 0), 0); const totalRec = data.reduce((s, x) => s + (parseInt(x.received) || 0), 0);
       document.getElementById('social-stats').innerHTML = '<div class="stat-card"><div class="stat-val">' + data.length + '</div><div class="stat-label">Total Clients</div></div><div class="stat-card"><div class="stat-val">' + data.filter(s => s.status === 'active').length + '</div><div class="stat-label">Active</div></div><div class="stat-card"><div class="stat-val stat-val-sm">' + fmtMMK(monthly) + '</div><div class="stat-label">Monthly Revenue</div></div><div class="stat-card"><div class="stat-val stat-val-sm">' + fmtMMK(totalRec) + '</div><div class="stat-label">Total ရငွေ</div></div>';
@@ -2431,6 +2575,7 @@
       tb.innerHTML = data.map(s => '<tr data-row><td><div class="cell-name" onclick="showCustomerHistory(\'' + esc(s.customer) + '\')">' + esc(s.customer) + '</div><div class="cell-sub">' + (s.phone || '') + '</div></td><td>' + (s.package || '—') + '</td><td>' + (s.platform || '—') + '</td><td>' + (s.posts || '—') + ' posts</td><td>' + (s.duration || '—') + ' လ</td><td class="money">' + fmtDate(s.start_date) + '</td><td class="money">' + fmtMMK(s.price) + '/လ</td><td class="money profit-positive">' + fmtMMK(s.received) + '</td><td>' + badge(s.payment || 'none') + '</td><td>' + badge(s.status || 'active') + '</td><td><button class="btn-ic" onclick="editItem(\'social\',\'' + s.id + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>' + (isAdmin() ? '<button class="btn-ic del" onclick="delItem(\'social\',\'' + s.id + '\',\'' + esc(s.customer) + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>' : '') + '<button class="btn-ic" title="Invoice" onclick="generateInvoice(\'social\',\'' + s.id + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></button></td></tr>').join('');
     }
 
+    /* ═══ REVENUE ═══ */
     let chartMonthlyInst = null, chartServiceInst = null;
     async function renderRevenue() {
       const [boosts, logos, webs, socials] = await Promise.all([dbGet('boost'), dbGet('logo'), dbGet('web'), dbGet('social')]);
@@ -2455,6 +2600,7 @@
       chartServiceInst = new Chart(ctx2, { type: 'doughnut', data: { labels: ['FB Boosting', 'Logo Design', 'Website', 'Social Media'], datasets: [{ data: [vals.bProfit, vals.lRec, vals.wRec, vals.sRec], backgroundColor: ['#a7e169', '#8ecb4f', '#6aad30', '#4d8a1a'], borderWidth: 0, hoverOffset: 8 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: textColor, padding: 12, font: { size: 11 } } } } } });
     }
 
+    /* ═══ ADMIN ═══ */
     async function renderAdmin() {
       const profiles = await dbGet('profiles');
       document.getElementById('user-list').innerHTML = profiles.map(u => '<div class="user-item"><div class="user-avatar">' + (u.display_name || 'U').charAt(0).toUpperCase() + '</div><div><div class="user-name">' + esc(u.display_name) + '</div><div class="user-meta">@' + esc(u.username) + ' · ' + (u.role === 'admin' ? 'Admin' : 'Viewer') + '</div></div><div class="user-actions">' + (u.id !== currentUser.id ? '<select class="f-select" style="width:auto;padding:4px 28px 4px 8px;font-size:11px" onchange="changeUserRole(\'' + u.id + '\',this.value)"><option value="viewer" ' + (u.role === 'viewer' ? 'selected' : '') + '>Viewer</option><option value="admin" ' + (u.role === 'admin' ? 'selected' : '') + '>Admin</option></select><button class="btn-ic del" onclick="deleteUser(\'' + u.id + '\',\'' + esc(u.display_name) + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>' : '') + '</div></div>').join('');
@@ -2471,21 +2617,40 @@
     }
     async function deleteUser(userId, name) { showConfirm('"' + name + '" ကို ဖျက်မည်', async () => { await sb.from('profiles').delete().eq('id', userId); toast('User ဖျက်ပြီး'); renderAdmin(); }); }
 
+    /* ═══ MODAL SYSTEM — UPDATED FOR ad_customer ═══ */
     let _editType = null, _editId = null;
     async function openModal(type, id = null) {
       _editType = type; _editId = id; let data = null;
-      if (id) { const arr = await dbGet(type); data = arr.find(x => x.id === id); }
+      if (id) {
+        const tbl = type === 'ad_customer' ? 'ad_customers' : type;
+        const arr = await dbGet(tbl); data = arr.find(x => x.id === id);
+      }
       let html = '';
-      if (type === 'boost') html = formBoost(data); else if (type === 'logo') html = formLogo(data); else if (type === 'web') html = formWeb(data); else if (type === 'social') html = formSocial(data); else if (type === 'personal') html = formPersonal(data);
-      document.getElementById('modalBody').innerHTML = html; document.getElementById('modalOverlay').classList.add('open');
+      if (type === 'boost') html = formBoost(data);
+      else if (type === 'logo') html = formLogo(data);
+      else if (type === 'web') html = formWeb(data);
+      else if (type === 'social') html = formSocial(data);
+      else if (type === 'personal') html = formPersonal(data);
+      else if (type === 'ad_customer') html = formAdCustomer(data);
+      document.getElementById('modalBody').innerHTML = html;
+      document.getElementById('modalOverlay').classList.add('open');
       if (type === 'boost' && data) calcBoostProfit();
       if (type === 'personal' && data) calcPersonalProfit();
+      if (type === 'ad_customer' && data) calcAdProfit();
     }
     function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
     function closeModalBg(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
     async function editItem(type, id) { await openModal(type, id); }
-    function delItem(type, id, name) { showConfirm('"' + name + '" record ကို ဖျက်မည်', async () => { await dbDelete(type, id); toast('ဖျက်ပြီး ✓'); await updateBadges(); const pm = { boost: 'boosting', logo: 'logo', web: 'website', social: 'social', personal: 'personal' }; renderPage(pm[type]); }); }
+    function delItem(type, id, name) {
+      showConfirm('"' + name + '" record ကို ဖျက်မည်', async () => {
+        const tbl = type === 'ad_customer' ? 'ad_customers' : type;
+        await dbDelete(tbl, id); toast('ဖျက်ပြီး ✓'); await updateBadges();
+        const pm = { boost: 'boosting', logo: 'logo', web: 'website', social: 'social', personal: 'personal', ad_customer: 'personal' };
+        renderPage(pm[type]);
+      });
+    }
 
+    /* ═══ FORM: BOOST ═══ */
     function formBoost(d) {
       return '<div class="modal-title">' + (d ? 'Boosting ပြင်ဆင်' : 'Boosting Client အသစ်') + '</div><div class="modal-sub">' + (d ? d.customer + ' — update' : 'FB Boosting အသစ်') + '</div><div class="f-row"><div class="f-group"><label class="f-label">Customer *</label><input class="f-input" id="f_customer" value="' + (d?.customer || '') + '"></div><div class="f-group"><label class="f-label">ဖုန်း</label><input class="f-input" id="f_phone" value="' + (d?.phone || '') + '"></div><div class="f-group span2"><label class="f-label">Post / Page</label><input class="f-input" id="f_post" value="' + (d?.post || '') + '"></div><div class="f-group"><label class="f-label">$ Amount *</label><input class="f-input" type="number" step="0.01" id="f_amount" value="' + (d?.amount || '') + '"></div><div class="f-group"><label class="f-label">ကြာချိန် (ရက်) *</label><input class="f-input" type="number" id="f_days" value="' + (d?.days || '') + '" oninput="autoEndDate()"></div><div class="f-group"><label class="f-label">စတင်ရက် *</label><input class="f-input" type="date" id="f_startDate" value="' + (d?.start_date || today()) + '" oninput="autoEndDate()"></div><div class="f-group"><label class="f-label">ကုန်ဆုံးရက် (Auto)</label><input class="f-input f-readonly" type="date" id="f_endDate" value="' + (d?.end_date || '') + '" readonly></div><div class="f-divider"></div><div class="f-group"><label class="f-label">Customer ပေးငွေ MMK *</label><input class="f-input" type="number" id="f_custMMK" value="' + (d?.cust_mmk || '') + '" oninput="calcBoostProfit()"></div><div class="f-group"><label class="f-label">Cost MMK *</label><input class="f-input" type="number" id="f_cost" value="' + (d?.cost || '') + '" oninput="calcBoostProfit()"></div><div class="f-group"><label class="f-label">အမြတ် (Auto)</label><input class="f-input f-readonly" id="f_profit" value="' + (d?.profit || '') + '" readonly><div class="f-hint">= Customer MMK − Cost</div></div><div class="f-group"><label class="f-label">Status</label><select class="f-select" id="f_status"><option value="active" ' + ((d?.status || 'active') === 'active' ? 'selected' : '') + '>Active</option><option value="completed" ' + (d?.status === 'completed' ? 'selected' : '') + '>ပြီးပြီ</option><option value="cancelled" ' + (d?.status === 'cancelled' ? 'selected' : '') + '>ဖျက်သိမ်း</option></select></div><div class="f-group span2"><label class="f-label">မှတ်ချက်</label><textarea class="f-textarea" id="f_note">' + (d?.note || '') + '</textarea></div></div><div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">မလုပ်တော့</button><button class="btn-save" onclick="saveBoost()">သိမ်းမည်</button></div>';
     }
@@ -2498,6 +2663,7 @@
       try { await dbPut('boost', obj); closeModal(); toast(_editId ? 'ပြင်ပြီး ✓' : 'ထည့်ပြီး ✓'); await updateBadges(); renderPage('boosting'); } catch (e) { toast('Error: ' + e.message, 'error'); }
     }
 
+    /* ═══ FORM: LOGO ═══ */
     function formLogo(d) {
       const rec = parseInt(d?.received) || 0, price = parseInt(d?.price) || 0;
       return '<div class="modal-title">' + (d ? 'Logo ပြင်ဆင်' : 'Logo Project အသစ်') + '</div><div class="modal-sub">' + (d ? d.customer + ' — update' : 'Logo Design project အသစ်') + '</div><div class="f-row"><div class="f-group"><label class="f-label">Customer *</label><input class="f-input" id="f_customer" value="' + (d?.customer || '') + '"></div><div class="f-group"><label class="f-label">ဖုန်း</label><input class="f-input" id="f_phone" value="' + (d?.phone || '') + '"></div><div class="f-group"><label class="f-label">Package</label><input class="f-input" id="f_package" value="' + (d?.package || '') + '"></div><div class="f-group"><label class="f-label">Revision</label><input class="f-input" type="number" id="f_revision" value="' + (d?.revision || '2') + '"></div><div class="f-group"><label class="f-label">Price MMK *</label><input class="f-input" type="number" id="f_price" value="' + (d?.price || '') + '" oninput="calcBal()"></div><div class="f-group"><label class="f-label">ရငွေ MMK</label><input class="f-input" type="number" id="f_received" value="' + (d?.received || '') + '" oninput="calcBal()"></div><div class="f-group"><label class="f-label">ကျန်ငွေ (Auto)</label><input class="f-input f-readonly" id="f_balance" value="' + (price - rec) + '" readonly></div><div class="f-group"><label class="f-label">Payment</label><select class="f-select" id="f_payment"><option value="none" ' + ((d?.payment || 'none') === 'none' ? 'selected' : '') + '>မရသေး</option><option value="half" ' + (d?.payment === 'half' ? 'selected' : '') + '>တစ်ဝက်ရ</option><option value="full" ' + (d?.payment === 'full' ? 'selected' : '') + '>အပြည့်ရ</option></select></div><div class="f-group"><label class="f-label">စတင်ရက်</label><input class="f-input" type="date" id="f_startDate" value="' + (d?.start_date || today()) + '"></div><div class="f-group"><label class="f-label">Deadline</label><input class="f-input" type="date" id="f_deadline" value="' + (d?.deadline || '') + '"></div><div class="f-group"><label class="f-label">Status</label><select class="f-select" id="f_status"><option value="pending" ' + ((d?.status || 'pending') === 'pending' ? 'selected' : '') + '>Pending</option><option value="in-progress" ' + (d?.status === 'in-progress' ? 'selected' : '') + '>လုပ်နေ</option><option value="completed" ' + (d?.status === 'completed' ? 'selected' : '') + '>ပြီးပြီ</option></select></div><div class="f-group span2"><label class="f-label">မှတ်ချက်</label><textarea class="f-textarea" id="f_note">' + (d?.note || '') + '</textarea></div></div><div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">မလုပ်တော့</button><button class="btn-save" onclick="saveLogo()">သိမ်းမည်</button></div>';
@@ -2510,6 +2676,7 @@
       try { await dbPut('logo', obj); closeModal(); toast(_editId ? 'ပြင်ပြီး ✓' : 'ထည့်ပြီး ✓'); await updateBadges(); renderPage('logo'); } catch (e) { toast('Error: ' + e.message, 'error'); }
     }
 
+    /* ═══ FORM: WEBSITE ═══ */
     function formWeb(d) {
       const rec = parseInt(d?.received) || 0, price = parseInt(d?.price) || 0;
       return '<div class="modal-title">' + (d ? 'Website ပြင်ဆင်' : 'Website Project အသစ်') + '</div><div class="modal-sub">' + (d ? d.customer + ' — update' : 'Website project အသစ်') + '</div><div class="f-row"><div class="f-group"><label class="f-label">Customer *</label><input class="f-input" id="f_customer" value="' + (d?.customer || '') + '"></div><div class="f-group"><label class="f-label">ဖုန်း</label><input class="f-input" id="f_phone" value="' + (d?.phone || '') + '"></div><div class="f-group"><label class="f-label">Type</label><input class="f-input" id="f_type" value="' + (d?.type || '') + '"></div><div class="f-group"><label class="f-label">Pages</label><input class="f-input" type="number" id="f_pages" value="' + (d?.pages || '') + '"></div><div class="f-group"><label class="f-label">Tech</label><input class="f-input" id="f_tech" value="' + (d?.tech || '') + '"></div><div class="f-group"><label class="f-label">Hosting</label><input class="f-input" id="f_hosting" value="' + (d?.hosting || '') + '"></div><div class="f-group"><label class="f-label">Price MMK *</label><input class="f-input" type="number" id="f_price" value="' + (d?.price || '') + '" oninput="calcBal()"></div><div class="f-group"><label class="f-label">ရငွေ MMK</label><input class="f-input" type="number" id="f_received" value="' + (d?.received || '') + '" oninput="calcBal()"></div><div class="f-group"><label class="f-label">ကျန်ငွေ (Auto)</label><input class="f-input f-readonly" id="f_balance" value="' + (price - rec) + '" readonly></div><div class="f-group"><label class="f-label">Payment</label><select class="f-select" id="f_payment"><option value="none" ' + ((d?.payment || 'none') === 'none' ? 'selected' : '') + '>မရသေး</option><option value="half" ' + (d?.payment === 'half' ? 'selected' : '') + '>တစ်ဝက်ရ</option><option value="full" ' + (d?.payment === 'full' ? 'selected' : '') + '>အပြည့်ရ</option></select></div><div class="f-group"><label class="f-label">စတင်ရက်</label><input class="f-input" type="date" id="f_startDate" value="' + (d?.start_date || today()) + '"></div><div class="f-group"><label class="f-label">Deadline</label><input class="f-input" type="date" id="f_deadline" value="' + (d?.deadline || '') + '"></div><div class="f-group"><label class="f-label">Status</label><select class="f-select" id="f_status"><option value="pending" ' + ((d?.status || 'pending') === 'pending' ? 'selected' : '') + '>Pending</option><option value="in-progress" ' + (d?.status === 'in-progress' ? 'selected' : '') + '>လုပ်နေ</option><option value="completed" ' + (d?.status === 'completed' ? 'selected' : '') + '>ပြီးပြီ</option></select></div><div class="f-group span2"><label class="f-label">မှတ်ချက်</label><textarea class="f-textarea" id="f_note">' + (d?.note || '') + '</textarea></div></div><div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">မလုပ်တော့</button><button class="btn-save" onclick="saveWeb()">သိမ်းမည်</button></div>';
@@ -2521,6 +2688,7 @@
       try { await dbPut('web', obj); closeModal(); toast(_editId ? 'ပြင်ပြီး ✓' : 'ထည့်ပြီး ✓'); await updateBadges(); renderPage('website'); } catch (e) { toast('Error: ' + e.message, 'error'); }
     }
 
+    /* ═══ FORM: SOCIAL ═══ */
     function formSocial(d) {
       return '<div class="modal-title">' + (d ? 'Social Media ပြင်ဆင်' : 'Social Media Client အသစ်') + '</div><div class="modal-sub">' + (d ? d.customer + ' — update' : 'Social Media client အသစ်') + '</div><div class="f-row"><div class="f-group"><label class="f-label">Customer *</label><input class="f-input" id="f_customer" value="' + (d?.customer || '') + '"></div><div class="f-group"><label class="f-label">ဖုန်း</label><input class="f-input" id="f_phone" value="' + (d?.phone || '') + '"></div><div class="f-group"><label class="f-label">Package</label><input class="f-input" id="f_package" value="' + (d?.package || '') + '"></div><div class="f-group"><label class="f-label">Platforms</label><input class="f-input" id="f_platform" value="' + (d?.platform || '') + '"></div><div class="f-group"><label class="f-label">Posts/Month</label><input class="f-input" type="number" id="f_posts" value="' + (d?.posts || '') + '"></div><div class="f-group"><label class="f-label">Stories/Month</label><input class="f-input" type="number" id="f_stories" value="' + (d?.stories || '') + '"></div><div class="f-group"><label class="f-label">Price/Month MMK *</label><input class="f-input" type="number" id="f_price" value="' + (d?.price || '') + '"></div><div class="f-group"><label class="f-label">သက်တမ်း (လ)</label><input class="f-input" type="number" id="f_duration" value="' + (d?.duration || '') + '"></div><div class="f-group"><label class="f-label">ရငွေ MMK</label><input class="f-input" type="number" id="f_received" value="' + (d?.received || '') + '"></div><div class="f-group"><label class="f-label">Payment</label><select class="f-select" id="f_payment"><option value="none" ' + ((d?.payment || 'none') === 'none' ? 'selected' : '') + '>မရသေး</option><option value="half" ' + (d?.payment === 'half' ? 'selected' : '') + '>တစ်ဝက်ရ</option><option value="full" ' + (d?.payment === 'full' ? 'selected' : '') + '>အပြည့်ရ</option></select></div><div class="f-group"><label class="f-label">စတင်ရက်</label><input class="f-input" type="date" id="f_startDate" value="' + (d?.start_date || today()) + '"></div><div class="f-group"><label class="f-label">Status</label><select class="f-select" id="f_status"><option value="active" ' + ((d?.status || 'active') === 'active' ? 'selected' : '') + '>Active</option><option value="completed" ' + (d?.status === 'completed' ? 'selected' : '') + '>ပြီးဆုံး</option><option value="cancelled" ' + (d?.status === 'cancelled' ? 'selected' : '') + '>ဖျက်သိမ်း</option></select></div><div class="f-group span2"><label class="f-label">မှတ်ချက်</label><textarea class="f-textarea" id="f_note">' + (d?.note || '') + '</textarea></div></div><div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">မလုပ်တော့</button><button class="btn-save" onclick="saveSocial()">သိမ်းမည်</button></div>';
     }
@@ -2530,31 +2698,220 @@
       try { await dbPut('social', obj); closeModal(); toast(_editId ? 'ပြင်ပြီး ✓' : 'ထည့်ပြီး ✓'); await updateBadges(); renderPage('social'); } catch (e) { toast('Error: ' + e.message, 'error'); }
     }
 
+    /* ═══════════════════════════════════════════════════════════
+       PERSONAL BUSINESS — ENHANCED MULTI-CURRENCY + AD CUSTOMERS
+       ═══════════════════════════════════════════════════════════ */
+
     function formPersonal(d) {
-      return '<div class="modal-title">' + (d ? 'Personal Record ပြင်ဆင်' : 'Personal Record အသစ်') + '</div><div class="modal-sub">' + (d ? d.project || d.customer + ' — update' : 'ကိုယ်ပိုင်လုပ်ငန်း အသုံးစရိတ်နှင့် ဝင်ငွေ') + '</div><div class="f-row"><div class="f-group"><label class="f-label">ရက်စွဲ *</label><input class="f-input" type="date" id="f_startDate" value="' + (d?.start_date || today()) + '"></div><div class="f-group"><label class="f-label">Customer / Client</label><input class="f-input" id="f_customer" value="' + (d?.customer || '') + '"></div><div class="f-group"><label class="f-label">Project Name</label><input class="f-input" id="f_project" value="' + (d?.project || '') + '"></div><div class="f-group"><label class="f-label">Spend ($)</label><input class="f-input" type="number" step="0.01" id="f_spend_usd" value="' + (d?.spend_usd || '') + '"></div><div class="f-group"><label class="f-label">Spend (MMK)</label><input class="f-input" type="number" id="f_spend_mmk" value="' + (d?.spend_mmk || '') + '" oninput="calcPersonalProfit()"></div><div class="f-group"><label class="f-label">Boosting Cost</label><input class="f-input" type="number" id="f_boost_cost" value="' + (d?.boost_cost || '') + '" oninput="calcPersonalProfit()"></div><div class="f-group"><label class="f-label">Revenue (MMK)</label><input class="f-input" type="number" id="f_revenue" value="' + (d?.revenue || '') + '" oninput="calcPersonalProfit()"></div><div class="f-group"><label class="f-label">အမြတ် (Auto)</label><input class="f-input f-readonly" id="f_profit" value="' + (d?.profit !== undefined ? d.profit : '') + '" readonly><div class="f-hint">= Revenue − Spend MMK − Boosting</div></div><div class="f-group"><label class="f-label">Status</label><select class="f-select" id="f_status"><option value="active" ' + ((d?.status || 'active') === 'active' ? 'selected' : '') + '>Active</option><option value="completed" ' + (d?.status === 'completed' ? 'selected' : '') + '>ပြီးဆုံး</option><option value="cancelled" ' + (d?.status === 'cancelled' ? 'selected' : '') + '>ဖျက်သိမ်း</option></select></div><div class="f-group span2"><label class="f-label">မှတ်ချက်</label><textarea class="f-textarea" id="f_note">' + (d?.note || '') + '</textarea></div></div><div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">မလုပ်တော့</button><button class="btn-save" onclick="savePersonal()">သိမ်းမည်</button></div>';
+      return '<div class="modal-title">' + (d ? 'Personal Record ပြင်ဆင်' : 'Personal Record အသစ်') + '</div>'
+        + '<div class="modal-sub">' + (d ? (d.project || d.customer) + ' — update' : 'Spend & Boosting Cost · $ / ¥ / MMK') + '</div>'
+        + '<div class="f-row">'
+        + '<div class="f-group"><label class="f-label">ရက်စွဲ *</label><input class="f-input" type="date" id="f_startDate" value="' + (d?.start_date || today()) + '"></div>'
+        + '<div class="f-group"><label class="f-label">Customer / Client</label><input class="f-input" id="f_customer" value="' + (d?.customer || '') + '"></div>'
+        + '<div class="f-group span2"><label class="f-label">Project Name</label><input class="f-input" id="f_project" value="' + (d?.project || '') + '"></div>'
+
+        + '<div class="f-section-label">💸 Spend (အသုံးစရိတ်)</div>'
+        + '<div class="f-group"><label class="f-label">Spend $ (USD)</label><input class="f-input" type="number" step="0.01" id="f_spend_usd" value="' + (d?.spend_usd || '') + '"></div>'
+        + '<div class="f-group"><label class="f-label">Spend ¥ (JPY)</label><input class="f-input" type="number" step="1" id="f_spend_jpy" value="' + (d?.spend_jpy || '') + '"></div>'
+        + '<div class="f-group span2"><label class="f-label">Spend MMK</label><input class="f-input" type="number" id="f_spend_mmk" value="' + (d?.spend_mmk || '') + '" oninput="calcPersonalProfit()"></div>'
+
+        + '<div class="f-section-label">🚀 Boosting Cost</div>'
+        + '<div class="f-group"><label class="f-label">Boost Cost $ (USD)</label><input class="f-input" type="number" step="0.01" id="f_boost_cost_usd" value="' + (d?.boost_cost_usd || '') + '"></div>'
+        + '<div class="f-group"><label class="f-label">Boost Cost ¥ (JPY)</label><input class="f-input" type="number" step="1" id="f_boost_cost_jpy" value="' + (d?.boost_cost_jpy || '') + '"></div>'
+        + '<div class="f-group span2"><label class="f-label">Boost Cost MMK</label><input class="f-input" type="number" id="f_boost_cost" value="' + (d?.boost_cost || '') + '" oninput="calcPersonalProfit()"></div>'
+
+        + '<div class="f-section-label">💰 Revenue & Profit</div>'
+        + '<div class="f-group"><label class="f-label">Revenue (MMK)</label><input class="f-input" type="number" id="f_revenue" value="' + (d?.revenue || '') + '" oninput="calcPersonalProfit()"></div>'
+        + '<div class="f-group"><label class="f-label">အမြတ် (Auto)</label><input class="f-input f-readonly" id="f_profit" value="' + (d?.profit !== undefined ? d.profit : '') + '" readonly><div class="f-hint">= Revenue − Spend MMK − Boost MMK</div></div>'
+        + '<div class="f-group"><label class="f-label">Status</label><select class="f-select" id="f_status"><option value="active" ' + ((d?.status || 'active') === 'active' ? 'selected' : '') + '>Active</option><option value="completed" ' + (d?.status === 'completed' ? 'selected' : '') + '>ပြီးဆုံး</option><option value="cancelled" ' + (d?.status === 'cancelled' ? 'selected' : '') + '>ဖျက်သိမ်း</option></select></div>'
+        + '<div class="f-group span2"><label class="f-label">မှတ်ချက်</label><textarea class="f-textarea" id="f_note">' + (d?.note || '') + '</textarea></div>'
+        + '</div>'
+        + '<div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">မလုပ်တော့</button><button class="btn-save" onclick="savePersonal()">သိမ်းမည်</button></div>';
     }
-    function calcPersonalProfit() { const r = parseInt(document.getElementById('f_revenue')?.value) || 0, s = parseInt(document.getElementById('f_spend_mmk')?.value) || 0, b = parseInt(document.getElementById('f_boost_cost')?.value) || 0; const p = document.getElementById('f_profit'); if (p) p.value = (r || s || b) ? r - s - b : ''; }
+
+    function calcPersonalProfit() {
+      const r = parseInt(document.getElementById('f_revenue')?.value) || 0;
+      const s = parseInt(document.getElementById('f_spend_mmk')?.value) || 0;
+      const b = parseInt(document.getElementById('f_boost_cost')?.value) || 0;
+      const p = document.getElementById('f_profit');
+      if (p) p.value = (r || s || b) ? r - s - b : '';
+    }
+
     async function savePersonal() {
-      const obj = { id: _editId || uid(), start_date: val('f_startDate') || today(), customer: val('f_customer') || null, project: val('f_project') || null, spend_usd: val('f_spend_usd') ? parseFloat(val('f_spend_usd')) : null, spend_mmk: parseInt(val('f_spend_mmk')) || 0, boost_cost: parseInt(val('f_boost_cost')) || 0, revenue: parseInt(val('f_revenue')) || 0, profit: (parseInt(val('f_revenue')) || 0) - (parseInt(val('f_spend_mmk')) || 0) - (parseInt(val('f_boost_cost')) || 0), status: val('f_status'), note: val('f_note') || null, created_by: currentUser.id };
-      try { await dbPut('personal', obj); closeModal(); toast(_editId ? 'ပြင်ပြီး ✓' : 'ထည့်ပြီး ✓'); renderPage('personal'); } catch (e) { toast('Error: ' + e.message, 'error'); }
+      const obj = {
+        id: _editId || uid(),
+        start_date: val('f_startDate') || today(),
+        customer: val('f_customer') || null,
+        project: val('f_project') || null,
+        spend_usd: val('f_spend_usd') ? parseFloat(val('f_spend_usd')) : 0,
+        spend_jpy: val('f_spend_jpy') ? parseFloat(val('f_spend_jpy')) : 0,
+        spend_mmk: parseInt(val('f_spend_mmk')) || 0,
+        boost_cost: parseInt(val('f_boost_cost')) || 0,
+        boost_cost_usd: val('f_boost_cost_usd') ? parseFloat(val('f_boost_cost_usd')) : 0,
+        boost_cost_jpy: val('f_boost_cost_jpy') ? parseFloat(val('f_boost_cost_jpy')) : 0,
+        revenue: parseInt(val('f_revenue')) || 0,
+        profit: (parseInt(val('f_revenue')) || 0) - (parseInt(val('f_spend_mmk')) || 0) - (parseInt(val('f_boost_cost')) || 0),
+        status: val('f_status'),
+        note: val('f_note') || null,
+        created_by: currentUser.id
+      };
+      try { await dbPut('personal', obj); closeModal(); toast(_editId ? 'ပြင်ပြီး ✓' : 'ထည့်ပြီး ✓'); renderPage('personal'); }
+      catch (e) { toast('Error: ' + e.message, 'error'); }
     }
 
+    /* ═══ MULTI-CURRENCY CELL HELPER ═══ */
+    function fmtCurrencyCell(usd, jpy, mmk) {
+      let lines = '';
+      if (usd) lines += '<div class="cur-line"><span class="cur-label">$</span><span class="cur-val">' + fmtN(usd, 2) + '</span></div>';
+      if (jpy) lines += '<div class="cur-line"><span class="cur-label">¥</span><span class="cur-val">' + parseInt(jpy).toLocaleString() + '</span></div>';
+      if (mmk) lines += '<div class="cur-line"><span class="cur-label">K</span><span class="cur-val">' + fmtMMK(mmk) + '</span></div>';
+      if (!lines) return '<span class="cur-val dim">—</span>';
+      return lines;
+    }
+
+    /* ═══ RENDER PERSONAL — ENHANCED ═══ */
     async function renderPersonal() {
-      const data = await dbGet('personal'); const totalSpend = data.reduce((s, p) => s + (parseInt(p.spend_mmk) || 0) + (parseInt(p.boost_cost) || 0), 0); const totalRev = data.reduce((s, p) => s + (parseInt(p.revenue) || 0), 0); const totalProfit = data.reduce((s, p) => s + (parseInt(p.profit) || 0), 0);
-      document.getElementById('personal-stats').innerHTML = '<div class="stat-card"><div class="stat-val">' + data.length + '</div><div class="stat-label">Total Records</div></div><div class="stat-card red-accent"><div class="stat-val stat-val-sm">' + fmtMMK(totalSpend) + '</div><div class="stat-label">Total Spend (MMK)</div></div><div class="stat-card"><div class="stat-val stat-val-sm">' + fmtMMK(totalRev) + '</div><div class="stat-label">Total Revenue (MMK)</div></div><div class="stat-card gray-accent"><div class="stat-val stat-val-sm">' + fmtMMK(totalProfit) + '</div><div class="stat-label">Net Profit (MMK)</div></div>';
+      const [data, adData] = await Promise.all([dbGet('personal'), dbGet('ad_customers')]);
+
+      /* --- Personal Stats (6 cards) --- */
+      const totalSpendUSD = data.reduce((s, p) => s + (parseFloat(p.spend_usd) || 0), 0);
+      const totalSpendJPY = data.reduce((s, p) => s + (parseFloat(p.spend_jpy) || 0), 0);
+      const totalSpendMMK = data.reduce((s, p) => s + (parseInt(p.spend_mmk) || 0) + (parseInt(p.boost_cost) || 0), 0);
+      const totalRev = data.reduce((s, p) => s + (parseInt(p.revenue) || 0), 0);
+      const totalProfit = data.reduce((s, p) => s + (parseInt(p.profit) || 0), 0);
+
+      document.getElementById('personal-stats').innerHTML =
+        '<div class="stat-card"><div class="stat-val">' + data.length + '</div><div class="stat-label">Total Records</div></div>'
+        + '<div class="stat-card red-accent"><div class="stat-val stat-val-sm">$' + fmtN(totalSpendUSD, 2) + '</div><div class="stat-label">Spend (USD)</div></div>'
+        + '<div class="stat-card red-accent"><div class="stat-val stat-val-sm">¥' + parseInt(totalSpendJPY).toLocaleString() + '</div><div class="stat-label">Spend (JPY)</div></div>'
+        + '<div class="stat-card red-accent"><div class="stat-val stat-val-sm">' + fmtMMK(totalSpendMMK) + '</div><div class="stat-label">Spend+Boost (MMK)</div></div>'
+        + '<div class="stat-card"><div class="stat-val stat-val-sm">' + fmtMMK(totalRev) + '</div><div class="stat-label">Revenue (MMK)</div></div>'
+        + '<div class="stat-card gray-accent"><div class="stat-val stat-val-sm ' + (totalProfit < 0 ? 'profit-negative' : 'profit-positive') + '">' + fmtMMK(totalProfit) + '</div><div class="stat-label">Net Profit (MMK)</div></div>';
+
+      /* --- Personal Table --- */
       const tb = document.getElementById('personal-list');
-      if (!data.length) { tb.innerHTML = '<tr class="empty-row"><td colspan="10">Personal record မရှိသေး</td></tr>'; return; }
-      tb.innerHTML = data.sort((a, b) => new Date(b.start_date || 0) - new Date(a.start_date || 0)).map(p => '<tr data-row><td>' + fmtDate(p.start_date) + '</td><td><div class="cell-name">' + esc(p.customer || '—') + '</div></td><td>' + esc(p.project || '—') + '</td><td class="money">' + (p.spend_usd ? '$' + fmtN(p.spend_usd, 2) : '—') + '</td><td class="money">' + fmtMMK(p.spend_mmk) + '</td><td class="money profit-positive">' + fmtMMK(p.revenue) + '</td><td class="money">' + fmtMMK(p.boost_cost) + '</td><td class="money ' + ((p.profit || 0) < 0 ? 'profit-negative' : 'profit-positive') + '">' + fmtMMK(p.profit) + '</td><td>' + badge(p.status || 'active') + '</td><td><button class="btn-ic" onclick="editItem(\'personal\',\'' + p.id + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>' + (isAdmin() ? '<button class="btn-ic del" onclick="delItem(\'personal\',\'' + p.id + '\',\'' + esc(p.project || p.customer || 'Record') + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>' : '') + '</td></tr>').join('');
+      if (!data.length) {
+        tb.innerHTML = '<tr class="empty-row"><td colspan="9">Personal record မရှိသေး</td></tr>';
+      } else {
+        tb.innerHTML = data.sort((a, b) => new Date(b.start_date || 0) - new Date(a.start_date || 0)).map(p =>
+          '<tr data-row>'
+          + '<td>' + fmtDate(p.start_date) + '</td>'
+          + '<td><div class="cell-name">' + esc(p.customer || '—') + '</div></td>'
+          + '<td>' + esc(p.project || '—') + '</td>'
+          + '<td><div class="currency-cell">' + fmtCurrencyCell(p.spend_usd, p.spend_jpy, p.spend_mmk) + '</div></td>'
+          + '<td><div class="currency-cell">' + fmtCurrencyCell(p.boost_cost_usd, p.boost_cost_jpy, p.boost_cost) + '</div></td>'
+          + '<td class="money profit-positive">' + fmtMMK(p.revenue) + '</td>'
+          + '<td class="money ' + ((p.profit || 0) < 0 ? 'profit-negative' : 'profit-positive') + '">' + fmtMMK(p.profit) + '</td>'
+          + '<td>' + badge(p.status || 'active') + '</td>'
+          + '<td>'
+          + '<button class="btn-ic" onclick="editItem(\'personal\',\'' + p.id + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
+          + (isAdmin() ? '<button class="btn-ic del" onclick="delItem(\'personal\',\'' + p.id + '\',\'' + esc(p.project || p.customer || 'Record') + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>' : '')
+          + '</td></tr>'
+        ).join('');
+      }
+
+      /* --- Ad Customer Stats (4 cards) --- */
+      const adTotalRev = adData.reduce((s, a) => s + (parseInt(a.revenue_mmk) || 0), 0);
+      const adTotalProfit = adData.reduce((s, a) => s + (parseInt(a.profit) || 0), 0);
+      const adTotalSpendUSD = adData.reduce((s, a) => s + (parseFloat(a.spend_usd) || 0), 0);
+
+      document.getElementById('ad-customer-stats').innerHTML =
+        '<div class="stat-card"><div class="stat-val">' + adData.length + '</div><div class="stat-label">Ad Customers</div></div>'
+        + '<div class="stat-card red-accent"><div class="stat-val stat-val-sm">$' + fmtN(adTotalSpendUSD, 2) + '</div><div class="stat-label">Ad Spend (USD)</div></div>'
+        + '<div class="stat-card"><div class="stat-val stat-val-sm">' + fmtMMK(adTotalRev) + '</div><div class="stat-label">Revenue (MMK)</div></div>'
+        + '<div class="stat-card gray-accent"><div class="stat-val stat-val-sm ' + (adTotalProfit < 0 ? 'profit-negative' : 'profit-positive') + '">' + fmtMMK(adTotalProfit) + '</div><div class="stat-label">Net Profit (MMK)</div></div>';
+
+      /* --- Ad Customer Table --- */
+      const adTb = document.getElementById('ad-customer-list');
+      if (!adData.length) {
+        adTb.innerHTML = '<tr class="empty-row"><td colspan="10">Ad Customer မရှိသေး — ကြော်ငြာမှ ရသော Customer ထည့်ပါ</td></tr>';
+      } else {
+        adTb.innerHTML = adData.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0)).map(a =>
+          '<tr data-row>'
+          + '<td>' + fmtDate(a.date) + '</td>'
+          + '<td><div class="cell-name">' + esc(a.customer_name || '—') + '</div></td>'
+          + '<td>' + esc(a.phone || '—') + '</td>'
+          + '<td>' + esc(a.project_name || '—') + '</td>'
+          + '<td><span class="badge badge-blue">' + esc(a.ad_source || '—') + '</span></td>'
+          + '<td><div class="currency-cell">' + fmtCurrencyCell(a.spend_usd, a.spend_jpy, a.spend_mmk) + '</div></td>'
+          + '<td class="money profit-positive">' + fmtMMK(a.revenue_mmk) + '</td>'
+          + '<td class="money ' + ((a.profit || 0) < 0 ? 'profit-negative' : 'profit-positive') + '">' + fmtMMK(a.profit) + '</td>'
+          + '<td>' + badge(a.status || 'active') + '</td>'
+          + '<td>'
+          + '<button class="btn-ic" onclick="editItem(\'ad_customer\',\'' + a.id + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
+          + (isAdmin() ? '<button class="btn-ic del" onclick="delItem(\'ad_customer\',\'' + a.id + '\',\'' + esc(a.customer_name || 'Record') + '\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>' : '')
+          + '</td></tr>'
+        ).join('');
+      }
     }
 
+    /* ═══ AD CUSTOMER FORM & SAVE ═══ */
+    function formAdCustomer(d) {
+      return '<div class="modal-title">' + (d ? 'Ad Customer ပြင်ဆင်' : 'Ad Customer အသစ်') + '</div>'
+        + '<div class="modal-sub">' + (d ? esc(d.customer_name) + ' — update' : 'ကြော်ငြာမှ ရရှိသော Customer / Project / Revenue') + '</div>'
+        + '<div class="f-row">'
+        + '<div class="f-group"><label class="f-label">ရက်စွဲ *</label><input class="f-input" type="date" id="f_date" value="' + (d?.date || today()) + '"></div>'
+        + '<div class="f-group"><label class="f-label">Customer Name *</label><input class="f-input" id="f_custName" value="' + (d?.customer_name || '') + '"></div>'
+        + '<div class="f-group"><label class="f-label">Phone</label><input class="f-input" id="f_phone" value="' + (d?.phone || '') + '"></div>'
+        + '<div class="f-group"><label class="f-label">Project Name</label><input class="f-input" id="f_projectName" value="' + (d?.project_name || '') + '"></div>'
+        + '<div class="f-group span2"><label class="f-label">Ad Source (ဘယ် Ad ကနေ)</label><input class="f-input" id="f_adSource" value="' + (d?.ad_source || '') + '" placeholder="e.g. FB Ad, Google Ad, TikTok"></div>'
+
+        + '<div class="f-section-label">💸 ကြော်ငြာ ကုန်ကျစရိတ်</div>'
+        + '<div class="f-group"><label class="f-label">Ad Spend $ (USD)</label><input class="f-input" type="number" step="0.01" id="f_adSpendUsd" value="' + (d?.spend_usd || '') + '"></div>'
+        + '<div class="f-group"><label class="f-label">Ad Spend ¥ (JPY)</label><input class="f-input" type="number" step="1" id="f_adSpendJpy" value="' + (d?.spend_jpy || '') + '"></div>'
+        + '<div class="f-group span2"><label class="f-label">Ad Spend MMK</label><input class="f-input" type="number" id="f_adSpendMmk" value="' + (d?.spend_mmk || '') + '" oninput="calcAdProfit()"></div>'
+
+        + '<div class="f-section-label">💰 Revenue & Profit</div>'
+        + '<div class="f-group"><label class="f-label">Revenue MMK *</label><input class="f-input" type="number" id="f_adRevenue" value="' + (d?.revenue_mmk || '') + '" oninput="calcAdProfit()"></div>'
+        + '<div class="f-group"><label class="f-label">Profit (Auto)</label><input class="f-input f-readonly" id="f_adProfit" value="' + (d?.profit || '') + '" readonly><div class="f-hint">= Revenue − Ad Spend MMK</div></div>'
+
+        + '<div class="f-group"><label class="f-label">Status</label><select class="f-select" id="f_status"><option value="active" ' + ((d?.status || 'active') === 'active' ? 'selected' : '') + '>Active</option><option value="completed" ' + (d?.status === 'completed' ? 'selected' : '') + '>ပြီးဆုံး</option><option value="cancelled" ' + (d?.status === 'cancelled' ? 'selected' : '') + '>ဖျက်သိမ်း</option></select></div>'
+        + '<div class="f-group span2"><label class="f-label">မှတ်ချက်</label><textarea class="f-textarea" id="f_note">' + (d?.note || '') + '</textarea></div>'
+        + '</div>'
+        + '<div class="modal-actions"><button class="btn-cancel" onclick="closeModal()">မလုပ်တော့</button><button class="btn-save" onclick="saveAdCustomer()">သိမ်းမည်</button></div>';
+    }
+
+    function calcAdProfit() {
+      const r = parseInt(document.getElementById('f_adRevenue')?.value) || 0;
+      const s = parseInt(document.getElementById('f_adSpendMmk')?.value) || 0;
+      const p = document.getElementById('f_adProfit');
+      if (p) p.value = (r || s) ? r - s : '';
+    }
+
+    async function saveAdCustomer() {
+      const name = val('f_custName');
+      if (!name) { toast('Customer Name ဖြည့်ပါ', 'error'); return; }
+      const revMmk = parseInt(val('f_adRevenue')) || 0;
+      const spMmk = parseInt(val('f_adSpendMmk')) || 0;
+      const obj = {
+        id: _editId || uid(),
+        date: val('f_date') || today(),
+        customer_name: name,
+        phone: val('f_phone') || null,
+        project_name: val('f_projectName') || null,
+        ad_source: val('f_adSource') || null,
+        spend_usd: val('f_adSpendUsd') ? parseFloat(val('f_adSpendUsd')) : 0,
+        spend_jpy: val('f_adSpendJpy') ? parseFloat(val('f_adSpendJpy')) : 0,
+        spend_mmk: spMmk,
+        revenue_mmk: revMmk,
+        profit: revMmk - spMmk,
+        status: val('f_status'),
+        note: val('f_note') || null,
+        created_by: currentUser.id
+      };
+      try { await dbPut('ad_customers', obj); closeModal(); toast(_editId ? 'ပြင်ပြီး ✓' : 'ထည့်ပြီး ✓'); renderPage('personal'); }
+      catch (e) { toast('Error: ' + e.message, 'error'); }
+    }
+
+    /* ═══ TABLE FILTER ═══ */
     function filterTable(tbId, q) { const rows = document.querySelectorAll('#' + tbId + ' tr[data-row]'); const lq = q.toLowerCase(); rows.forEach(r => { r.style.display = r.textContent.toLowerCase().includes(lq) ? '' : 'none'; }); }
 
-    /* ═══ EXPORT — with try-catch + library check ═══ */
+    /* ═══ EXPORT EXCEL ═══ */
     async function exportExcel(type) {
       try {
         if (typeof XLSX === 'undefined') { toast('Excel library မ load ရသေး — ခဏစောင့်ပါ', 'error'); return; }
         const data = await dbGet(type); if (!data.length) { toast('Export လုပ်ရန် data မရှိ', 'error'); return; }
-        const names = { boost: 'FB_Boosting', logo: 'Logo_Design', web: 'Website_Design', social: 'Social_Media', personal: 'Personal_Business' };
+        const names = { boost: 'FB_Boosting', logo: 'Logo_Design', web: 'Website_Design', social: 'Social_Media', personal: 'Personal_Business', ad_customers: 'Ad_Customers' };
         const ws = XLSX.utils.json_to_sheet(data); const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, names[type] || 'Data');
         XLSX.writeFile(wb, 'SM_Pro_' + (names[type] || 'Data') + '_' + today() + '.xlsx');
@@ -2562,6 +2919,7 @@
       } catch (e) { console.error('Excel error:', e); toast('Excel error: ' + e.message, 'error'); }
     }
 
+    /* ═══ EXPORT PDF ═══ */
     async function exportPDF(type) {
       try {
         if (typeof window.jspdf === 'undefined') { toast('PDF library မ load ရသေး — ခဏစောင့်ပါ', 'error'); return; }
@@ -2574,7 +2932,7 @@
         if (type === 'boost') { headers = [['Customer', 'Post', 'Days', 'Start', 'End', '$ Amount', 'Cust MMK', 'Cost', 'Profit', 'Status']]; rows = data.map(b => [b.customer || '', b.post || '', b.days || '', b.start_date || '', b.end_date || '', '$' + (b.amount || 0), fmtMMK(b.cust_mmk), fmtMMK(b.cost), fmtMMK(b.profit), b.status || '']); }
         else if (type === 'logo') { headers = [['Customer', 'Package', 'Start', 'Deadline', 'Price', 'Received', 'Balance', 'Payment', 'Status']]; rows = data.map(l => [l.customer || '', l.package || '', l.start_date || '', l.deadline || '', fmtMMK(l.price), fmtMMK(l.received), fmtMMK((l.price || 0) - (l.received || 0)), l.payment || '', l.status || '']); }
         else if (type === 'web') { headers = [['Customer', 'Type', 'Pages', 'Tech', 'Start', 'Deadline', 'Price', 'Received', 'Balance', 'Status']]; rows = data.map(w => [w.customer || '', w.type || '', w.pages || '', w.tech || '', w.start_date || '', w.deadline || '', fmtMMK(w.price), fmtMMK(w.received), fmtMMK((w.price || 0) - (w.received || 0)), w.status || '']); }
-        else if (type === 'personal') { headers = [['Date', 'Customer', 'Project', 'Spend($)', 'Spend(MMK)', 'Rev(MMK)', 'Boosting', 'Profit', 'Status']]; rows = data.map(p => [p.start_date || '', p.customer || '', p.project || '', p.spend_usd ? '$' + p.spend_usd : '', fmtMMK(p.spend_mmk), fmtMMK(p.revenue), fmtMMK(p.boost_cost), fmtMMK(p.profit), p.status || '']); }
+        else if (type === 'personal') { headers = [['Date', 'Customer', 'Project', 'Spend $', 'Spend ¥', 'Spend MMK', 'Boost MMK', 'Revenue', 'Profit', 'Status']]; rows = data.map(p => [p.start_date || '', p.customer || '', p.project || '', p.spend_usd ? '$' + p.spend_usd : '', p.spend_jpy ? '¥' + p.spend_jpy : '', fmtMMK(p.spend_mmk), fmtMMK(p.boost_cost), fmtMMK(p.revenue), fmtMMK(p.profit), p.status || '']); }
         else { headers = [['Customer', 'Package', 'Platform', 'Posts/Mo', 'Price/Mo', 'Received', 'Payment', 'Status']]; rows = data.map(s => [s.customer || '', s.package || '', s.platform || '', s.posts || '', fmtMMK(s.price), fmtMMK(s.received), s.payment || '', s.status || '']); }
         doc.autoTable({ head: headers, body: rows, startY: 34, styles: { fontSize: 9 }, headStyles: { fillColor: [142, 203, 79] } });
         doc.save('SM_Pro_' + (names[type] || '').replace(/ /g, '_') + '_' + today() + '.pdf');
@@ -2582,6 +2940,7 @@
       } catch (e) { console.error('PDF error:', e); toast('PDF error: ' + e.message, 'error'); }
     }
 
+    /* ═══ INVOICE ═══ */
     async function generateInvoice(type, id) {
       try {
         if (typeof window.jspdf === 'undefined') { toast('PDF library မ load ရသေး — ခဏစောင့်ပါ', 'error'); return; }
@@ -2616,6 +2975,7 @@
       } catch (e) { console.error('Invoice error:', e); toast('Invoice error: ' + e.message, 'error'); }
     }
 
+    /* ═══ REVENUE PDF ═══ */
     async function exportRevenuePDF() {
       try {
         if (typeof window.jspdf === 'undefined') { toast('PDF library မ load ရသေး', 'error'); return; }
@@ -2632,6 +2992,7 @@
       } catch (e) { console.error('Revenue PDF error:', e); toast('PDF error: ' + e.message, 'error'); }
     }
 
+    /* ═══ SESSION CHECK & INIT ═══ */
     (async () => {
       const { data: { session } } = await sb.auth.getSession();
       if (session) { await loadUserProfile(session.user); document.getElementById('loginScreen').style.display = 'none'; startApp(); }
